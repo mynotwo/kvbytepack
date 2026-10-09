@@ -1,0 +1,16 @@
+[project]
+name = "kvzip"
+version = "0.1.0"
+description = "Lossless compression of LLM KV cache and activations via byte-plane layout + general-purpose codecs"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+dependencies = ["numpy", "zstandard"]
+
+[project.optional-dependencies]
+codecs = ["lz4", "brotli"]
+bench = ["torch>=2.1", "transformers>=4.40", "lz4", "brotli"]
+test = ["pytest"]
+
+[tool.setuptools]
+packages = ["kvzip"]

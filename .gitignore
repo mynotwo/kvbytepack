@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+results/raw/
+.agent-harness/
+NOTICE-REVIEW.md
