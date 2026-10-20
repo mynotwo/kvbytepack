@@ -22,7 +22,7 @@ Project page with interactive results: https://mynotwo.github.io/kvcache-bench/
 
 ## Where compression pays off
 
-The offline ratios above assume a CPU codec. In a serving system the codec
+The offline ratios in Results assume a CPU codec. In a serving system the codec
 sits on the restore path, and there CPU decode costs more than it saves.
 [aibrix-hybrid-kvcache](https://github.com/mynotwo/aibrix-hybrid-kvcache)
 (branch `delivery/hybrid-connector`) offloads the KV cache of
@@ -42,18 +42,65 @@ Restore window, median over 8 GPUs:
 - At 256K, restoring takes 0.44 s to the first token; recomputing takes
   11–15 s.
 
-The layout in this repo is not on that restore path yet: the 1.34× there
-is nvCOMP ANS on raw bytes. Byte split + channel-first lifts CPU zstd from
-1.29× to 1.51× (BF16, table below); whether it lifts GPU ANS by a similar
-margin has not been measured.
+The connector compresses raw bytes with ANS; it does not use the layout in
+this repo. Measured on H100 with nvCOMP (Qwen2.5-7B KV, BF16, real text,
+median of 18 samples):
+
+| GPU codec | Ratio | Decode |
+|---|---|---|
+| ANS, raw bytes | 1.22× | 47 GB/s |
+| ANS, channel-first | 1.23× | 34 GB/s |
+| ANS, channel-first + byte split | 1.43× | 19 GB/s |
+| GDeflate, channel-first + byte split | 1.44× | 1.1 GB/s |
+| zstd, channel-first + byte split | 1.49× | 0.7 GB/s |
+
+Decode is GB/s of BF16 output, on samples of 2K–8K tokens; a larger record
+may decode faster. Byte split lifts the ANS ratio by 17%, but decode falls
+to 19 GB/s, well under the ~50 GB/s PCIe copy it overlaps with. A 1.6 GB record would take
+about 84 ms to decode, against 34.5 ms for the whole restore today, so the
+connector keeps ANS on raw bytes.
 
 ## Results
 
-### KV cache (Qwen2.5-7B, Qwen3-8B; 512–8K tokens; 5 input types; 50 cells)
+### KV cache, real text (Qwen2.5-7B, BF16)
+
+18 samples: English (ShareGPT conversations), Chinese (Wikipedia) and code
+(CPython standard library), 2K and 8K tokens, 3 samples each. No document is
+used twice. Every blob was decoded and compared byte for byte.
+
+| Method | Median ratio | 2K / 8K |
+|---|---|---|
+| raw zstd-1 | 1.29× | 1.29× / 1.29× |
+| byte split + zstd-1 | 1.48× | 1.48× / 1.48× |
+| channel-first + byte split + zstd-1 | 1.49× | 1.49× / 1.49× |
+| channel-first + byte split + zstd-19 (best) | **1.52×** | 1.52× / 1.53× |
+
+- The three input types land within 0.4% of each other.
+- Context length barely matters: 8K compresses 0.4% better than 2K.
+- Against floating-point compressors on the same tensors:
+
+  | Compressor | Median ratio |
+  |---|---|
+  | kvzip, channel-first + byte split + zstd-1 | 1.49× |
+  | XOR with previous token + zstd-1 | 1.46× |
+  | zfp, reversible mode | 1.02× |
+  | fpzip, lossless | 0.56× |
+
+  zfp and fpzip take FP32, so BF16 was widened first; the ratio is against
+  the BF16 bytes. SZ3 has no lossless mode and was left out.
+
+Scripts and per-sample results: `kvzip-evidence` on the H100 test machine,
+not in this repo.
+
+### KV cache, repeated-paragraph inputs (Qwen2.5-7B, Qwen3-8B; 512–8K tokens; 5 input types; 50 cells)
+
+These inputs repeat one short paragraph to the target length, which
+overstates the ratio: on Qwen2.5-7B, channel-first + byte split + zstd-1
+gives 1.62× here against 1.49× on real text.
 
 | Format | Median best ratio | Range | raw zstd-1 | byte split + zstd-1 | Gain over best raw codec |
 |---|---|---|---|---|---|
-| BF16 | **1.71×** | 1.52–1.93× | 1.29× | 1.51× | +19.4% |
+| BF16 | 1.71× | 1.52–1.93× | 1.29× | 1.51× | +19.4% |
 | FP16 | 1.75× | 1.54–2.09× | 1.31× | 1.56× | +22.9% |
 | FP32 | 3.43× | 3.03–3.86× | 2.09× | 3.01× | +15.9% |
 | FP8 E4M3 / E5M2 | 1.56× / 1.95× | | | | +7% |
@@ -64,8 +111,8 @@ margin has not been measured.
 - BF16 and FP32 are lossless relative to the model's original tensors. FP16,
   FP8 and INT formats are lossy conversions, and the compression is lossless
   only relative to the converted bytes.
-- Compression ratio rises with context length: Qwen2.5-7B goes from 1.56× at
-  512 tokens to 1.86× at 8K tokens (BF16, best method, median over the 5 input types).
+- The ratio rises with context length here (Qwen2.5-7B: 1.56× at 512 tokens,
+  1.86× at 8K). That rise comes from the repetition; on real text it is 0.4%.
 
 Source: `results/kv_aggregate_qwen.json`. Run
 `python bench/summarize.py results/kv_aggregate_qwen.json` to regenerate the
@@ -140,19 +187,16 @@ method, INT4 `pipeline_zstd-1`, drifted by up to 0.5%.
 
 ## Caveats
 
-- Inputs are a short paragraph repeated to the target length (see
-  `kvzip/inputs.py`). Repeated tokens make layer-0 V rows (a linear function
-  of the embedding) repeat exactly. That one layer compresses at ~28× at 2K
-  tokens, and it raises the aggregate KV ratio by about 2%. The KV numbers above
-  include layer 0. How much the repetition affects deeper layers, or the trend
-  with context length, has not been measured with non-repeated text.
+- `bench/run_bench.py` builds inputs by repeating a short paragraph (see
+  `kvzip/inputs.py`). Use the real-text numbers above when quoting a ratio.
+- The activation numbers come from repeated inputs only.
+- Real text was measured on one model, Qwen2.5-7B, in BF16.
 
 ## Not measured
 
 - End-to-end serving throughput, concurrency gains, and production memory savings
 - Overlap between copying and compression during serving
 - Random access within a compressed block
-- GPU-side codecs for the byte-split layout (the online numbers above use nvCOMP ANS on raw bytes)
 
 ## License
 
