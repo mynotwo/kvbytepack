@@ -101,6 +101,28 @@ Qwen2.5-7B cells (512/2048 tokens × english/code) with a newer stack
 reproduced the best KV ratio within 0.1% in all 16 cell × format pairs. One
 method, INT4 `pipeline_zstd-1`, drifted by up to 0.5%.
 
+## Online serving
+
+The offline ratios above assume a CPU codec. In a serving system the codec
+sits on the restore path, and there CPU decode costs more than it saves.
+[aibrix-hybrid-kvcache](https://github.com/mynotwo/aibrix-hybrid-kvcache)
+(branch `delivery/hybrid-connector`) offloads the KV cache of
+Qwen3.8-Flash-Next (TP8, H800) to AIBrix and restores it into unmodified vLLM.
+Restore window, median over 8 GPUs:
+
+| Prompt | No compression | GPU ANS (nvCOMP, ratio 1.34) | CPU zstd (ratio 1.22) |
+|---|---|---|---|
+| 8K | 6.3 ms | 6.2 ms | 32 ms |
+| 128K | 43.8 ms | 34.5 ms | – |
+| 256K | 83.9 ms | 64.4 ms | – |
+
+- Above 32K the restore is bound by host-to-device PCIe bandwidth, so fewer
+  bytes means a shorter restore only when decode runs on the GPU.
+- The zstd number comes from an earlier build, where no compression took
+  6.7 ms at 8K. zstd was dropped from the connector after that run.
+- At 256K, restoring takes 0.44 s to the first token; recomputing takes
+  11–15 s.
+
 ## Caveats
 
 - Inputs are a short paragraph repeated to the target length (see
@@ -115,7 +137,7 @@ method, INT4 `pipeline_zstd-1`, drifted by up to 0.5%.
 - End-to-end serving throughput, concurrency gains, and production memory savings
 - Overlap between copying and compression during serving
 - Random access within a compressed block
-- GPU-side codecs (all codecs here run on CPU)
+- GPU-side codecs for the byte-split layout (the online numbers above use nvCOMP ANS on raw bytes)
 
 ## License
 
