@@ -1,0 +1,2 @@
+exclude NOTICE-REVIEW.md
+prune results/raw

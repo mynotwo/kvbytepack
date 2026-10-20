@@ -4,3 +4,4 @@ __pycache__/
 results/raw/
 .agent-harness/
 NOTICE-REVIEW.md
+*.egg-info/

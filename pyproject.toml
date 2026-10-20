@@ -6,6 +6,17 @@ readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.9"
 dependencies = ["numpy", "zstandard"]
+authors = [{ name = "mynotwo" }]
+keywords = ["kv-cache", "compression", "llm", "lossless", "inference"]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Archiving :: Compression",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://mynotwo.github.io/kvcache-bench/"
 
 [project.optional-dependencies]
 codecs = ["lz4", "brotli"]
@@ -13,4 +24,9 @@ bench = ["torch>=2.1", "transformers>=4.40", "lz4", "brotli"]
 test = ["pytest"]
 
 [tool.setuptools]
+license-files = ["LICENSE"]
 packages = ["kvzip"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
