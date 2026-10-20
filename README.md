@@ -20,6 +20,33 @@ Compression policy = representation + layout + codec.
 
 Project page with interactive results: https://mynotwo.github.io/kvcache-bench/
 
+## Where compression pays off
+
+The offline ratios above assume a CPU codec. In a serving system the codec
+sits on the restore path, and there CPU decode costs more than it saves.
+[aibrix-hybrid-kvcache](https://github.com/mynotwo/aibrix-hybrid-kvcache)
+(branch `delivery/hybrid-connector`) offloads the KV cache of
+Qwen3.8-Flash-Next (TP8, H800) to AIBrix and restores it into unmodified vLLM.
+Restore window, median over 8 GPUs:
+
+| Prompt | No compression | GPU ANS (nvCOMP, ratio 1.34) | CPU zstd (ratio 1.22) |
+|---|---|---|---|
+| 8K | 6.3 ms | 6.2 ms | 32 ms |
+| 128K | 43.8 ms | 34.5 ms | – |
+| 256K | 83.9 ms | 64.4 ms | – |
+
+- Above 32K the restore is bound by host-to-device PCIe bandwidth, so fewer
+  bytes means a shorter restore only when decode runs on the GPU.
+- The zstd number comes from an earlier build, where no compression took
+  6.7 ms at 8K. zstd was dropped from the connector after that run.
+- At 256K, restoring takes 0.44 s to the first token; recomputing takes
+  11–15 s.
+
+The layout in this repo is not on that restore path yet: the 1.34× there
+is nvCOMP ANS on raw bytes. Byte split + channel-first lifts CPU zstd from
+1.29× to 1.51× (BF16, table below); whether it lifts GPU ANS by a similar
+margin has not been measured.
+
 ## Results
 
 ### KV cache (Qwen2.5-7B, Qwen3-8B; 512–8K tokens; 5 input types; 50 cells)
@@ -69,6 +96,16 @@ compressed blob was decoded and compared byte for byte with the input.
 ## Usage
 
 ```python
+from kvzip import zip_tensor, unzip_tensor
+
+# any numpy array or torch tensor (bfloat16 included); last dim = channels
+blob = zip_tensor(kv, method="pipeline_zstd-1")
+assert unzip_tensor(blob).equal(kv)          # torch; numpy: array_equal
+```
+
+The blob carries method, dtype and shape. The byte-level API underneath:
+
+```python
 from kvzip import encode, decode
 
 # raw: bytes of a [S, D] tensor in BF16 (bpe = bytes per element = 2)
@@ -100,28 +137,6 @@ model's forward pass is not bit-identical across versions. Re-running 4
 Qwen2.5-7B cells (512/2048 tokens × english/code) with a newer stack
 reproduced the best KV ratio within 0.1% in all 16 cell × format pairs. One
 method, INT4 `pipeline_zstd-1`, drifted by up to 0.5%.
-
-## Online serving
-
-The offline ratios above assume a CPU codec. In a serving system the codec
-sits on the restore path, and there CPU decode costs more than it saves.
-[aibrix-hybrid-kvcache](https://github.com/mynotwo/aibrix-hybrid-kvcache)
-(branch `delivery/hybrid-connector`) offloads the KV cache of
-Qwen3.8-Flash-Next (TP8, H800) to AIBrix and restores it into unmodified vLLM.
-Restore window, median over 8 GPUs:
-
-| Prompt | No compression | GPU ANS (nvCOMP, ratio 1.34) | CPU zstd (ratio 1.22) |
-|---|---|---|---|
-| 8K | 6.3 ms | 6.2 ms | 32 ms |
-| 128K | 43.8 ms | 34.5 ms | – |
-| 256K | 83.9 ms | 64.4 ms | – |
-
-- Above 32K the restore is bound by host-to-device PCIe bandwidth, so fewer
-  bytes means a shorter restore only when decode runs on the GPU.
-- The zstd number comes from an earlier build, where no compression took
-  6.7 ms at 8K. zstd was dropped from the connector after that run.
-- At 256K, restoring takes 0.44 s to the first token; recomputing takes
-  11–15 s.
 
 ## Caveats
 
