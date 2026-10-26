@@ -1,2 +1,5 @@
 exclude NOTICE-REVIEW.md
 prune results/raw
+include results/kv_aggregate_qwen.json results/measurements.csv results/summary.csv results/manifest.json
+recursive-include bench *.py
+recursive-include docs *.md
