@@ -1,6 +1,6 @@
 [project]
 name = "kvbytepack"
-version = "0.2.0"
+version = "0.2.1"
 description = "Lossless compression of LLM KV cache and activations via byte-plane layout + general-purpose codecs"
 readme = "README.md"
 license = { text = "Apache-2.0" }

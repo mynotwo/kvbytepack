@@ -9,7 +9,7 @@ import numpy as np
 import zstandard as zstd
 
 from kvbytepack import zip_tensor
-from kvbytepack.codec import _unpack, byte_merge, untranspose_bytes
+from kvbytepack.codec import _unpack, merge_untranspose
 from kvbytepack.tensor import MAGIC
 
 RECORD_MAGIC = b"KBL1"
@@ -88,8 +88,8 @@ def unpack(record, layout):
                 plane, max_output_size=size, allow_extra_data=False))
         except zstd.ZstdError as exc:
             raise ValueError("cannot decode layout record plane") from exc
-    restored = untranspose_bytes(byte_merge(decoded), layout.tokens,
-                                layout.channels, layout.bytes_per_element)
+    restored = merge_untranspose(decoded, layout.tokens, layout.channels,
+                                layout.bytes_per_element)
     if len(restored) != layout.raw_bytes:
         raise ValueError("decoded payload length mismatch")
     return restored

@@ -82,6 +82,28 @@ def byte_merge(planes):
     return np.stack(cols, axis=1).tobytes()
 
 
+def transpose_split(raw, S, D, bpe):
+    """Produce the existing channel-major byte planes in a single layout pass."""
+    if bpe < 1:
+        return [raw]
+    arr = np.frombuffer(raw, dtype=np.uint8).reshape(S, D, int(bpe))
+    return [np.ascontiguousarray(arr[:, :, i].T).tobytes()
+            for i in range(int(bpe))]
+
+
+def merge_untranspose(planes, S, D, bpe):
+    """Restore token-major bytes without an intermediate channel-major buffer."""
+    if bpe < 1:
+        return byte_merge(planes)
+    width = int(bpe)
+    if len(planes) != width:
+        raise ValueError("plane count does not match bytes per element")
+    arr = np.empty((S, D, width), dtype=np.uint8)
+    for i, plane in enumerate(planes):
+        arr[:, :, i] = np.frombuffer(plane, dtype=np.uint8).reshape(D, S).T
+    return arr.tobytes()
+
+
 def _pack(blobs):
     """Length-prefixed concatenation so planes can be split again on decode."""
     head = struct.pack("<I", len(blobs)) + b"".join(struct.pack("<Q", len(b)) for b in blobs)
@@ -117,8 +139,8 @@ def encode(raw, S, D, bpe, method):
         return comp(raw)
     if layout == "transpose":
         return comp(transpose_bytes(raw, S, D, bpe))
-    data = transpose_bytes(raw, S, D, bpe) if layout == "pipeline" else raw
-    return _pack([comp(p) for p in byte_split(data, bpe)])
+    planes = transpose_split(raw, S, D, bpe) if layout == "pipeline" else byte_split(raw, bpe)
+    return _pack([comp(p) for p in planes])
 
 
 def decode(blob, S, D, bpe, method):
@@ -128,8 +150,8 @@ def decode(blob, S, D, bpe, method):
         return dec(blob)
     if layout == "transpose":
         return untranspose_bytes(dec(blob), S, D, bpe)
-    data = byte_merge([dec(p) for p in _unpack(blob)])
-    return untranspose_bytes(data, S, D, bpe) if layout == "pipeline" else data
+    planes = [dec(p) for p in _unpack(blob)]
+    return merge_untranspose(planes, S, D, bpe) if layout == "pipeline" else byte_merge(planes)
 
 
 def payload_size(blob, method):
