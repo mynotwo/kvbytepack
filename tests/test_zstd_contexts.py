@@ -117,3 +117,16 @@ def test_custom_codec_and_mutable_inputs_keep_byte_plane_contract(monkeypatch):
     monkeypatch.setitem(codec.CODECS, "zstd-1", (bytes_only, decompress))
     assert codec.encode(bytearray(raw), 4, 4, 2, "pipeline_zstd-1") == expected
     assert seen == codec.transpose_split(raw, 4, 4, 2)
+
+
+def test_mutable_input_uses_copying_path_with_native_codec(monkeypatch):
+    original = codec.transpose_split
+    seen = []
+    def copying_path(raw, *geometry):
+        seen.append(type(raw))
+        return original(raw, *geometry)
+    raw = bytes(range(32))
+    expected = codec.encode(raw, 4, 4, 2, "pipeline_zstd-1")
+    monkeypatch.setattr(codec, "transpose_split", copying_path)
+    assert codec.encode(bytearray(raw), 4, 4, 2, "pipeline_zstd-1") == expected
+    assert seen == [bytearray]

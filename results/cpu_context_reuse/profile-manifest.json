@@ -1,0 +1,29 @@
+{
+  "sources": {
+    "before": {
+      "commit": "65fe9f83680cb8ddc80cb8186ecea86741e76b1f",
+      "dirty": false,
+      "files": {
+        "kvbytepack/codec.py": "6eca2df9bb59ee776e86d5e91fb1a56fbdf94eaa4a70d20e8aef4701d2fb907c",
+        "kvbytepack/tensor.py": "8ef2abf5eea60a13e3a5e0ef85ce45d142e9bf793480546ab4b5a95bf90a490c",
+        "examples/aibrix_layout/adapter.py": "f1190e574cf587d9db9e4513c1b958799469836b0a3791a31be83fafad5c5f4b"
+      }
+    },
+    "after": {
+      "commit": "536b4ba5187db44003415ebc08cfd28b7b65c4e2",
+      "dirty": false,
+      "files": {
+        "kvbytepack/codec.py": "abef832db9f492e23095ee8cb5890817eee89a3e544dd9eab9a058c72544dcc9",
+        "kvbytepack/tensor.py": "8ef2abf5eea60a13e3a5e0ef85ce45d142e9bf793480546ab4b5a95bf90a490c",
+        "examples/aibrix_layout/adapter.py": "17890e825329b524eddeca8b1790d3ddd082ff235ce00633234ac5cc5303159f"
+      }
+    }
+  },
+  "files": {
+    "profile-before.json": "c10fdc4eafcbc8302c1c993afdb2b903ee53d6e9fec4f360d5c4f329526b01d2",
+    "profile-after.json": "4158fab2011cf2a84ec6d4f4eade517830fb831ebb598cca1960860a61eebe4a",
+    "context-memory.json": "401a01ba3a6c81b668ef75b5295e2ef1c5a5efa779496c4453a656430879b5ea",
+    "profile_driver.py": "685215db18e39ea2ad86b1b298e418e280ea44d532fb6848f4215cd99afb0500"
+  },
+  "scope": "separate diagnostic runs; not used as timing samples"
+}
