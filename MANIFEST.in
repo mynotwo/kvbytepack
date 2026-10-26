@@ -3,3 +3,6 @@ prune results/raw
 include results/kv_aggregate_qwen.json results/measurements.csv results/summary.csv results/manifest.json
 recursive-include bench *.py
 recursive-include docs *.md
+recursive-include examples/aibrix_layout *.py
+recursive-include tests/fixtures/aibrix_marshallers *.py *.json
+recursive-include results/aibrix_layout *.csv *.json

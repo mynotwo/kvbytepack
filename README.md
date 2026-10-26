@@ -106,6 +106,14 @@ python bench/run_bench.py --models Qwen/Qwen2.5-7B --target kv \
 python bench/summarize.py results/raw
 ```
 
+## AIBrix interface experiment
+
+A [CPU contract experiment](docs/aibrix-layout.md) compares complete record sizes
+and encode/decode costs against AIBrix's pinned Zstd marshaller. All 36 synthetic
+case/path rows round-trip, but layout saves bytes in only two of nine cases;
+CPU overhead limits the benefit. It is an inspectable downstream prototype,
+not an upstream integration or a serving-speed claim.
+
 ## How the layout works
 
 ```text
