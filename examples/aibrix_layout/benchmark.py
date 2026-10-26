@@ -128,10 +128,10 @@ def write_results(out, rows, samples, manifest):
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
 
-def check_results(out):
-    """Recheck committed synthetic sizes/round trips; don't reassert old timings."""
+def check_rows(out, expected, input_source, files=("measurements.csv", "samples.json")):
+    """Recheck sizes/round trips and sample summaries, not historical speed."""
     manifest = json.loads((out / "manifest.json").read_text())
-    if set(manifest["files"]) != {"measurements.csv", "samples.json"}:
+    if set(manifest["files"]) != set(files):
         raise ValueError("result file coverage mismatch")
     for name, digest in manifest["files"].items():
         if hashlib.sha256((out / name).read_bytes()).hexdigest() != digest:
@@ -143,9 +143,7 @@ def check_results(out):
         rows = list(csv.DictReader(file))
     samples = json.loads((out / "samples.json").read_text())
     sample_map = {(s["case_id"], s["path"]): s for s in samples}
-    expected = {(case_id, path): (raw, layout)
-                for case_id, raw, layout, source in fixtures() for path in PATHS}
-    if (len(rows) != len(expected) or manifest["case_count"] != 9
+    if (len(rows) != len(expected) or manifest["case_count"] != len(expected) // 4
             or len(samples) != len(expected) or set(sample_map) != set(expected)
             or manifest["paths"] != list(PATHS)):
         raise ValueError("case/path coverage mismatch")
@@ -156,7 +154,7 @@ def check_results(out):
             raise ValueError("unknown or duplicate case/path")
         seen.add(key)
         raw, layout = expected[key]
-        if (row["input_source"] != "synthetic" or int(row["tokens"]) != layout.tokens
+        if (row["input_source"] != input_source or int(row["tokens"]) != layout.tokens
                 or int(row["channels"]) != layout.channels
                 or int(row["bytes_per_element"]) != layout.bytes_per_element
                 or int(row["repeats"]) != manifest["repeats"]):
@@ -176,7 +174,13 @@ def check_results(out):
                 or float(row["full_blob_ratio"]) != len(raw) / len(blob)
                 or row["byte_exact"] != "True" or decode(blob) != raw):
             raise ValueError(f"size or round-trip mismatch: {key}")
-    print(f"Checked {len(expected)} synthetic case/path rows; no historical timing claim")
+    print(f"Checked {len(expected)} {input_source} case/path rows; no historical timing claim")
+
+
+def check_results(out):
+    expected = {(case_id, path): (raw, layout)
+                for case_id, raw, layout, source in fixtures() for path in PATHS}
+    check_rows(out, expected, "synthetic")
 
 
 def positive(value):

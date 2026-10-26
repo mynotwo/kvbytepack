@@ -126,6 +126,35 @@ def test_public_synthetic_evidence():
 
 
 @pytest.mark.skipif(sys.version_info < (3, 10), reason="pinned AIBrix module requires Python 3.10")
+def test_public_model_capture_all_layers_contexts_and_paths():
+    from examples.aibrix_layout.capture import check
+    check(Path(__file__).resolve().parents[1] / "results/aibrix_layout/model_capture")
+
+
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="pinned AIBrix module requires Python 3.10")
+@pytest.mark.parametrize("damage", ["missing", "duplicate"])
+def test_model_capture_rejects_incomplete_or_duplicate_layers(tmp_path, damage):
+    import numpy as np
+    import shutil
+    import zipfile
+    from examples.aibrix_layout.capture import check
+    source = Path(__file__).resolve().parents[1] / "results/aibrix_layout/model_capture"
+    for name in ("capture.json", "prompt.txt"):
+        (tmp_path / name).write_bytes((source / name).read_bytes())
+    if damage == "missing":
+        with np.load(source / "kv_payloads.npz", allow_pickle=False) as arrays:
+            missing = {k: arrays[k] for k in arrays.files if k != "ctx128_K_00"}
+        np.savez_compressed(tmp_path / "kv_payloads.npz", **missing)
+    else:
+        shutil.copy2(source / "kv_payloads.npz", tmp_path / "kv_payloads.npz")
+        with zipfile.ZipFile(tmp_path / "kv_payloads.npz", "a") as archive:
+            with pytest.warns(UserWarning, match="Duplicate name"):
+                archive.writestr("ctx128_K_00.npy", archive.read("ctx128_K_00.npy"))
+    with pytest.raises(ValueError, match="missing/duplicate"):
+        check(tmp_path)
+
+
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="pinned AIBrix module requires Python 3.10")
 def test_supplied_payload_preserves_provenance_and_complete_cost(tmp_path):
     raw = bytes(range(32))
     rows, samples, manifest = measure([("supplied_array", raw, Layout(2, 8, 2), "user_supplied_npy")], 2, 1)
@@ -144,7 +173,8 @@ def test_evidence_corruption_rejected_even_with_updated_hashes(tmp_path, damage)
     import io
     source = Path(__file__).resolve().parents[1] / "results/aibrix_layout"
     for path in source.iterdir():
-        (tmp_path / path.name).write_bytes(path.read_bytes())
+        if path.is_file():
+            (tmp_path / path.name).write_bytes(path.read_bytes())
     with (tmp_path / "measurements.csv").open() as file:
         rows = list(csv.DictReader(file))
     if damage == "duplicate":

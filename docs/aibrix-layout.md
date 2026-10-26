@@ -74,6 +74,66 @@ These machine-specific observations do not justify GPU/PCIe or production
 acceleration claims. Even favorable synthetic byte ratios can lose to CPU
 layout/copy/checksum work. This reference implementation is not a GPU codec.
 
+## Captured model KV: all layers, with original bytes
+
+A separate fresh CPU capture uses
+[Qwen2.5-0.5B at revision 060db649](https://huggingface.co/Qwen/Qwen2.5-0.5B/tree/060db6499f32faf8b98477b0a26969ef7d8b9987).
+It runs non-repeated 128- and 512-token prefixes of one pinned CPython source
+file through the model and captures every layer's K and V in BF16.
+There are 24 layers × 2 scopes × 2 contexts = **96 payloads**, compared through
+four paths = **384 rows**. The two prefixes overlap; layers, K/V and contexts
+are related samples, not independent documents or training runs.
+
+The [raw BF16 bit patterns](../results/aibrix_layout/model_capture/kv_payloads.npz)
+are published as non-object uint16 NumPy arrays, one array per context/layer/scope.
+The archive preserves bytes; it performs no BF16-to-FP16 conversion.
+[Capture metadata and token IDs](../results/aibrix_layout/model_capture/capture.json),
+[full CSV](../results/aibrix_layout/model_capture/measurements.csv),
+[timing samples](../results/aibrix_layout/model_capture/samples.json), and
+[hash manifest](../results/aibrix_layout/model_capture/manifest.json) accompany it.
+The public input and its PSF license are included. No user/private prompt is used.
+
+Complete stored bytes summed over all 48 K/V payloads in each context:
+
+| Context | Raw bytes | Upstream default Zstd bytes | Level-1 control bytes | Complete layout records | Smaller than level-1 control |
+|---|---:|---:|---:|---:|---:|
+| 128 | 1572864 | 1233913 | 1234526 | 1085457 | 47/48 |
+| 512 | 6291456 | 4887811 | 4890637 | 4249030 | 47/48 |
+
+All 384 rows restored their original bytes. Relative to the matched level-1
+control, this layout record is smaller in 94/96 payloads, but slower to encode
+and decode. Sum the per-payload encode/decode medians for a serial cost bound:
+
+- 128 tokens: 149,069 fewer stored bytes (12.07%), with 6.811 ms of additional summed CPU medians; break-even bandwidth 0.022 GB/s.
+- 512 tokens: 641,607 fewer stored bytes (13.12%), with 21.349 ms of additional summed CPU medians; break-even bandwidth 0.030 GB/s.
+
+These sums are a cost model, not a measured batched transfer. This small-model,
+single-source result supports investigating byte layout, but does not establish
+7B/hybrid-model generality, serving gains or whole-model output equivalence.
+The measured additional CPU cost still limits the usefulness of this reference
+implementation on fast links.
+
+Offline verification uses NumPy/Zstd only, with no model download or PyTorch:
+
+```bash
+python -m examples.aibrix_layout.capture --check results/aibrix_layout/model_capture
+```
+
+To collect a new run with the same pinned model and input:
+
+```bash
+python -m pip install '.[bench]'
+python -m examples.aibrix_layout.capture --out-dir /tmp/own-model-capture
+```
+
+This downloads approximately 1 GB of model weights and uses CPU PyTorch.
+Capture metadata records software versions, source-code hashes, device,
+attention implementation, actual token IDs and model revision. Different
+software/hardware may produce different model bytes; the offline check verifies
+the published bytes rather than claiming cross-platform model determinism.
+On the author's machine the download used system TLS trust-store initialization;
+no certificate verification was disabled and no HF token was supplied.
+
 ## Adapter contract
 
 The caller supplies `Layout(tokens, channels, bytes_per_element)` for token-major
@@ -131,5 +191,5 @@ The committed `--check` mode applies to the fixed synthetic suite only.
 AIBrix requires an accepted issue before feature implementation/PR. This
 experiment supports the existing design discussion without modifying upstream
 code or adding a dependency. An upstream feature needs maintainer agreement on
-the metadata boundary and real captured payload evidence with end-to-end cost.
+the metadata boundary and evidence from relevant serving workloads with actual end-to-end cost.
 The separate MEMORY backend PR #3221 remains independent.
