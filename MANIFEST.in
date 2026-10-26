@@ -7,3 +7,4 @@ recursive-include examples/aibrix_layout *.py
 recursive-include tests/fixtures/aibrix_marshallers *.py *.json
 recursive-include results/aibrix_layout *.csv *.json
 recursive-include results/aibrix_layout/model_capture *.npz *.txt PYTHON-LICENSE
+recursive-include results/cpu_optimization *.csv *.json *.py

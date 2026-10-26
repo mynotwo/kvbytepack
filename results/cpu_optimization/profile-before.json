@@ -1,0 +1,455 @@
+{
+  "profile_iterations": 20,
+  "profile_total_seconds": 0.911002166,
+  "functions": [
+    {
+      "function": "<method 'tobytes' of 'numpy.ndarray' objects>",
+      "module": "~",
+      "calls": 11520,
+      "self_seconds": 0.416761182,
+      "cumulative_seconds": 0.416761182
+    },
+    {
+      "function": "<method 'compress' of 'zstandard.backend_c.ZstdCompressor' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.20485755200000003,
+      "cumulative_seconds": 0.20485755200000003
+    },
+    {
+      "function": "<method 'decompress' of 'zstandard.backend_c.ZstdDecompressor' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.07454425,
+      "cumulative_seconds": 0.07454425
+    },
+    {
+      "function": "<built-in method _hashlib.openssl_sha256>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.07127518000000001,
+      "cumulative_seconds": 0.07127518000000001
+    },
+    {
+      "function": "stack",
+      "module": "shape_base.py",
+      "calls": 1920,
+      "self_seconds": 0.044003781000000006,
+      "cumulative_seconds": 0.044757764000000005
+    },
+    {
+      "function": "unpack",
+      "module": "adapter.py",
+      "calls": 1920,
+      "self_seconds": 0.018256341000000002,
+      "cumulative_seconds": 0.38664028
+    },
+    {
+      "function": "run",
+      "module": "profile_driver.py",
+      "calls": 1,
+      "self_seconds": 0.008329681,
+      "cumulative_seconds": 0.9109915000000001
+    },
+    {
+      "function": "zip_tensor",
+      "module": "tensor.py",
+      "calls": 1920,
+      "self_seconds": 0.007979667000000001,
+      "cumulative_seconds": 0.472135473
+    },
+    {
+      "function": "pack",
+      "module": "adapter.py",
+      "calls": 1920,
+      "self_seconds": 0.005496244,
+      "cumulative_seconds": 0.516021539
+    },
+    {
+      "function": "<lambda>",
+      "module": "codec.py",
+      "calls": 3840,
+      "self_seconds": 0.003786666,
+      "cumulative_seconds": 0.20864421800000002
+    },
+    {
+      "function": "encode",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.003727502,
+      "cumulative_seconds": 0.452728251
+    },
+    {
+      "function": "_pack",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.0034531730000000004,
+      "cumulative_seconds": 0.008560083000000001
+    },
+    {
+      "function": "_unpack",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.003326107,
+      "cumulative_seconds": 0.003974972
+    },
+    {
+      "function": "<built-in method numpy.frombuffer>",
+      "module": "~",
+      "calls": 11520,
+      "self_seconds": 0.003180422,
+      "cumulative_seconds": 0.003180422
+    },
+    {
+      "function": "<method 'join' of 'bytes' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.0030441160000000004,
+      "cumulative_seconds": 0.004667624
+    },
+    {
+      "function": "byte_merge",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.002645254,
+      "cumulative_seconds": 0.052988772
+    },
+    {
+      "function": "iterencode",
+      "module": "encoder.py",
+      "calls": 1920,
+      "self_seconds": 0.0019589810000000003,
+      "cumulative_seconds": 0.0019589810000000003
+    },
+    {
+      "function": "<built-in method builtins.len>",
+      "module": "~",
+      "calls": 28800,
+      "self_seconds": 0.001888394,
+      "cumulative_seconds": 0.001888394
+    },
+    {
+      "function": "byte_split",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.0018460170000000001,
+      "cumulative_seconds": 0.044065825
+    },
+    {
+      "function": "_as_numpy",
+      "module": "tensor.py",
+      "calls": 1920,
+      "self_seconds": 0.0017608440000000001,
+      "cumulative_seconds": 0.00294134
+    },
+    {
+      "function": "__str__",
+      "module": "_dtype.py",
+      "calls": 3840,
+      "self_seconds": 0.001580512,
+      "cumulative_seconds": 0.0018419990000000002
+    },
+    {
+      "function": "_parse",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.001521152,
+      "cumulative_seconds": 0.002700184
+    },
+    {
+      "function": "decode",
+      "module": "decoder.py",
+      "calls": 1920,
+      "self_seconds": 0.0014224880000000002,
+      "cumulative_seconds": 0.00365188
+    },
+    {
+      "function": "<method 'reshape' of 'numpy.ndarray' objects>",
+      "module": "~",
+      "calls": 7680,
+      "self_seconds": 0.0013352160000000002,
+      "cumulative_seconds": 0.0013352160000000002
+    },
+    {
+      "function": "loads",
+      "module": "__init__.py",
+      "calls": 1920,
+      "self_seconds": 0.001331118,
+      "cumulative_seconds": 0.007262284000000001
+    },
+    {
+      "function": "untranspose_bytes",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.0012285260000000002,
+      "cumulative_seconds": 0.187915081
+    },
+    {
+      "function": "transpose_bytes",
+      "module": "codec.py",
+      "calls": 1920,
+      "self_seconds": 0.001151429,
+      "cumulative_seconds": 0.18503043900000002
+    },
+    {
+      "function": "dtype",
+      "module": "adapter.py",
+      "calls": 3840,
+      "self_seconds": 0.0011470500000000002,
+      "cumulative_seconds": 0.0011470500000000002
+    },
+    {
+      "function": "encode",
+      "module": "encoder.py",
+      "calls": 1920,
+      "self_seconds": 0.001134073,
+      "cumulative_seconds": 0.0035801390000000004
+    },
+    {
+      "function": "<method 'digest' of '_hashlib.HASH' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.001052364,
+      "cumulative_seconds": 0.001052364
+    },
+    {
+      "function": "detect_encoding",
+      "module": "__init__.py",
+      "calls": 1920,
+      "self_seconds": 0.0010514580000000001,
+      "cumulative_seconds": 0.00173562
+    },
+    {
+      "function": "raw_decode",
+      "module": "decoder.py",
+      "calls": 1920,
+      "self_seconds": 0.0010374380000000001,
+      "cumulative_seconds": 0.0010374380000000001
+    },
+    {
+      "function": "<built-in method _struct.unpack_from>",
+      "module": "~",
+      "calls": 9600,
+      "self_seconds": 0.00102646,
+      "cumulative_seconds": 0.00102646
+    },
+    {
+      "function": "<genexpr>",
+      "module": "codec.py",
+      "calls": 5760,
+      "self_seconds": 0.0010112510000000001,
+      "cumulative_seconds": 0.001623508
+    },
+    {
+      "function": "<built-in method builtins.isinstance>",
+      "module": "~",
+      "calls": 13440,
+      "self_seconds": 0.000947419,
+      "cumulative_seconds": 0.000947419
+    },
+    {
+      "function": "<built-in method _struct.pack>",
+      "module": "~",
+      "calls": 7680,
+      "self_seconds": 0.0009300900000000001,
+      "cumulative_seconds": 0.0009300900000000001
+    },
+    {
+      "function": "<method 'startswith' of 'str' objects>",
+      "module": "~",
+      "calls": 7680,
+      "self_seconds": 0.00082624,
+      "cumulative_seconds": 0.00082624
+    },
+    {
+      "function": "<method 'match' of 're.Pattern' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.000729076,
+      "cumulative_seconds": 0.000729076
+    },
+    {
+      "function": "<built-in method builtins.any>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000689282,
+      "cumulative_seconds": 0.001245044
+    },
+    {
+      "function": "<method 'append' of 'list' objects>",
+      "module": "~",
+      "calls": 7680,
+      "self_seconds": 0.000658686,
+      "cumulative_seconds": 0.000658686
+    },
+    {
+      "function": "<method 'transpose' of 'numpy.ndarray' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.0005920900000000001,
+      "cumulative_seconds": 0.0005920900000000001
+    },
+    {
+      "function": "<method 'startswith' of 'bytes' objects>",
+      "module": "~",
+      "calls": 5760,
+      "self_seconds": 0.000578796,
+      "cumulative_seconds": 0.000578796
+    },
+    {
+      "function": "<genexpr>",
+      "module": "adapter.py",
+      "calls": 5760,
+      "self_seconds": 0.000555762,
+      "cumulative_seconds": 0.000555762
+    },
+    {
+      "function": "<built-in method zstandard.backend_c.frame_content_size>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.000473703,
+      "cumulative_seconds": 0.000473703
+    },
+    {
+      "function": "dumps",
+      "module": "__init__.py",
+      "calls": 1920,
+      "self_seconds": 0.00046911500000000004,
+      "cumulative_seconds": 0.004049254
+    },
+    {
+      "function": "raw_bytes",
+      "module": "adapter.py",
+      "calls": 3840,
+      "self_seconds": 0.00045122500000000003,
+      "cumulative_seconds": 0.00045122500000000003
+    },
+    {
+      "function": "_arrays_for_stack_dispatcher",
+      "module": "shape_base.py",
+      "calls": 1920,
+      "self_seconds": 0.000424335,
+      "cumulative_seconds": 0.000661304
+    },
+    {
+      "function": "_stack_dispatcher",
+      "module": "shape_base.py",
+      "calls": 1920,
+      "self_seconds": 0.00039094300000000004,
+      "cumulative_seconds": 0.001052247
+    },
+    {
+      "function": "<method 'end' of 're.Match' objects>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.00032605700000000004,
+      "cumulative_seconds": 0.00032605700000000004
+    },
+    {
+      "function": "<built-in method numpy.asanyarray>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.000283518,
+      "cumulative_seconds": 0.000283518
+    },
+    {
+      "function": "<method 'decode' of 'bytes' objects>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000274094,
+      "cumulative_seconds": 0.000274094
+    },
+    {
+      "function": "<built-in method builtins.issubclass>",
+      "module": "~",
+      "calls": 3840,
+      "self_seconds": 0.000261487,
+      "cumulative_seconds": 0.000261487
+    },
+    {
+      "function": "<method 'encode' of 'str' objects>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000242283,
+      "cumulative_seconds": 0.000242283
+    },
+    {
+      "function": "<built-in method builtins.hasattr>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.00023696900000000001,
+      "cumulative_seconds": 0.00023696900000000001
+    },
+    {
+      "function": "<method 'rstrip' of 'str' objects>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000228003,
+      "cumulative_seconds": 0.000228003
+    },
+    {
+      "function": "<built-in method builtins.sum>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.00021560200000000001,
+      "cumulative_seconds": 0.00021560200000000001
+    },
+    {
+      "function": "<method 'get' of 'dict' objects>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000212966,
+      "cumulative_seconds": 0.000212966
+    },
+    {
+      "function": "<built-in method numpy.lib.array_utils.normalize_axis_index>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.00019538700000000002,
+      "cumulative_seconds": 0.00019538700000000002
+    },
+    {
+      "function": "<method 'join' of 'str' objects>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000186447,
+      "cumulative_seconds": 0.000186447
+    },
+    {
+      "function": "<built-in method _hashlib.compare_digest>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.00016877100000000001,
+      "cumulative_seconds": 0.00016877100000000001
+    },
+    {
+      "function": "<built-in method numpy.ascontiguousarray>",
+      "module": "~",
+      "calls": 1920,
+      "self_seconds": 0.000157071,
+      "cumulative_seconds": 0.000157071
+    },
+    {
+      "function": "concatenate",
+      "module": "multiarray.py",
+      "calls": 1920,
+      "self_seconds": 0.000134194,
+      "cumulative_seconds": 0.000134194
+    },
+    {
+      "function": "<method 'disable' of '_lsprof.Profiler' objects>",
+      "module": "~",
+      "calls": 1,
+      "self_seconds": 1.0666000000000001e-05,
+      "cumulative_seconds": 1.0666000000000001e-05
+    }
+  ],
+  "payloads_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "memory_case": "ctx512_V_23",
+  "tracked_memory_raw_bytes": 131072,
+  "tracked_peak_bytes": {
+    "encode": 577270,
+    "decode": 668231
+  },
+  "memory_scope": "Python/NumPy tracemalloc; excludes untracked native allocations; separate from timing"
+}

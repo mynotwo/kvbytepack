@@ -106,6 +106,15 @@ python bench/run_bench.py --models Qwen/Qwen2.5-7B --target kv \
 python bench/summarize.py results/raw
 ```
 
+## CPU layout performance
+
+[Version 0.2.1 measurements](docs/cpu-optimization.md) compare the same 96 real
+KV payloads against the previous implementation in six balanced rounds.
+Core encoding is 1.61–1.85× faster and decoding 2.11–2.44× faster on the measured
+Apple M4 Pro. Complete records retain their metadata/checksum checks and improve
+as well. Every before/after encoded byte and stored size matches; all timed
+decodes restore the original bytes. These are CPU-call measurements.
+
 ## AIBrix interface experiment
 
 A [CPU contract experiment](docs/aibrix-layout.md) compares complete record sizes
