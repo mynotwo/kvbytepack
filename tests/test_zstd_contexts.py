@@ -87,3 +87,10 @@ def test_same_thread_nested_call_uses_separate_context():
     codec._zstd_local.decompressor = NestedDecompressor()
     assert codec._zstd_decompress(blob, allow_extra_data=False) == raw
     assert not codec._zstd_local.decompressing
+
+
+def test_bad_compressor_input_releases_busy_flag():
+    with pytest.raises(TypeError):
+        codec._zstd1_compress(None)
+    assert not codec._zstd_local.compressing
+    assert codec._zstd_decompress(codec._zstd1_compress(b"valid after error")) == b"valid after error"

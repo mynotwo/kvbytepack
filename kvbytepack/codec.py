@@ -117,9 +117,12 @@ def transpose_split(raw, S, D, bpe):
     """Produce the existing channel-major byte planes in a single layout pass."""
     if bpe < 1:
         return [raw]
+    return [p.tobytes() for p in _transpose_plane_array(raw, S, D, bpe)]
+
+
+def _transpose_plane_array(raw, S, D, bpe):
     arr = np.frombuffer(raw, dtype=np.uint8).reshape(S, D, int(bpe))
-    return [np.ascontiguousarray(arr[:, :, i].T).tobytes()
-            for i in range(int(bpe))]
+    return np.ascontiguousarray(arr.transpose(2, 1, 0))
 
 
 def merge_untranspose(planes, S, D, bpe):
@@ -170,7 +173,11 @@ def encode(raw, S, D, bpe, method):
         return comp(raw)
     if layout == "transpose":
         return comp(transpose_bytes(raw, S, D, bpe))
-    planes = transpose_split(raw, S, D, bpe) if layout == "pipeline" else byte_split(raw, bpe)
+    if layout == "pipeline" and comp is _zstd1_compress and bpe >= 1:
+        # Native Zstd accepts contiguous buffers: avoid serializing each plane again.
+        planes = [memoryview(p) for p in _transpose_plane_array(raw, S, D, bpe)]
+    else:
+        planes = transpose_split(raw, S, D, bpe) if layout == "pipeline" else byte_split(raw, bpe)
     return _pack([comp(p) for p in planes])
 
 
