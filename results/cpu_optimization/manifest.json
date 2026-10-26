@@ -1,0 +1,268 @@
+{
+  "schema": 1,
+  "baseline": "1d8a4764681e1449cc5e4d2a6681d51a2f2eddd0",
+  "payloads_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "driver_sha256": "ba8a9e32bd68fed5b366a1c7b364d47bad1d4a82ab4e06d0cd8d6971e57d6331",
+  "rounds": 6,
+  "repeats": 21,
+  "warmups": 3,
+  "sources": {
+    "before": {
+      "commit": "1d8a4764681e1449cc5e4d2a6681d51a2f2eddd0",
+      "dirty": false,
+      "files": {
+        "kvbytepack/codec.py": "5713bc2b6231863de17d75eb243be83b13f091597478ea10ce59bdae1f3fa82d",
+        "kvbytepack/tensor.py": "8ef2abf5eea60a13e3a5e0ef85ce45d142e9bf793480546ab4b5a95bf90a490c",
+        "examples/aibrix_layout/adapter.py": "06b55f243a89b30b775276aae529a32e1149137ef0b0215be8d02d8d37f85bbb"
+      }
+    },
+    "after": {
+      "commit": "608dca4285bc57f0992f6988e015105c0fa2d7d8",
+      "dirty": false,
+      "files": {
+        "kvbytepack/codec.py": "6eca2df9bb59ee776e86d5e91fb1a56fbdf94eaa4a70d20e8aef4701d2fb907c",
+        "kvbytepack/tensor.py": "8ef2abf5eea60a13e3a5e0ef85ce45d142e9bf793480546ab4b5a95bf90a490c",
+        "examples/aibrix_layout/adapter.py": "f1190e574cf587d9db9e4513c1b958799469836b0a3791a31be83fafad5c5f4b"
+      }
+    }
+  },
+  "environments": [
+    {
+      "round": 0,
+      "variant": "before",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.14208984375,
+        5.091796875,
+        5.65380859375
+      ]
+    },
+    {
+      "round": 0,
+      "variant": "after",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.14208984375,
+        5.091796875,
+        5.65380859375
+      ]
+    },
+    {
+      "round": 1,
+      "variant": "after",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.14208984375,
+        5.091796875,
+        5.65380859375
+      ]
+    },
+    {
+      "round": 1,
+      "variant": "before",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.85107421875,
+        5.2392578125,
+        5.70263671875
+      ]
+    },
+    {
+      "round": 2,
+      "variant": "before",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.70263671875,
+        5.21826171875,
+        5.6923828125
+      ]
+    },
+    {
+      "round": 2,
+      "variant": "after",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.70263671875,
+        5.21826171875,
+        5.6923828125
+      ]
+    },
+    {
+      "round": 3,
+      "variant": "after",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.72607421875,
+        5.23095703125,
+        5.69384765625
+      ]
+    },
+    {
+      "round": 3,
+      "variant": "before",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.72607421875,
+        5.23095703125,
+        5.69384765625
+      ]
+    },
+    {
+      "round": 4,
+      "variant": "before",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.82763671875,
+        5.26025390625,
+        5.701171875
+      ]
+    },
+    {
+      "round": 4,
+      "variant": "after",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.84130859375,
+        5.2724609375,
+        5.70263671875
+      ]
+    },
+    {
+      "round": 5,
+      "variant": "after",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.84130859375,
+        5.2724609375,
+        5.70263671875
+      ]
+    },
+    {
+      "round": 5,
+      "variant": "before",
+      "python": "3.12.13",
+      "platform": "macOS-26.3.2-arm64-arm-64bit",
+      "machine": "arm64",
+      "numpy": "2.5.4",
+      "zstandard": "0.25.0",
+      "zstd_runtime": [
+        1,
+        5,
+        7
+      ],
+      "load_average": [
+        5.69384765625,
+        5.2509765625,
+        5.6923828125
+      ]
+    }
+  ],
+  "protocol": "isolated sequential processes; AB/BA alternating rounds; same seeded payload/path shuffle",
+  "scope": "96 stored BF16 KV payloads, one 0.5B model, overlapping 128/512-token prefixes",
+  "metric": "sum of 48 per-payload medians per context/path/round; median paired speedup across rounds",
+  "limits": "CPU codec calls, not serving/transfer throughput; no universal performance threshold",
+  "files": {
+    "measurements.csv": "9ce3179eaac51fec4c1a5df302b323df88e1ff0d4fba85c398a27bef9fcb0026",
+    "summary.csv": "3f6566bfcae87c3f6c65cc02037b448098c43a7ca2ab53e0347d0a4f058935c5",
+    "samples.json": "b5176c35c2700a1ab6ffc494a9548aa3909bd66820b1970631edff5a878de86e"
+  }
+}

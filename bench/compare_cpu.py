@@ -91,8 +91,9 @@ def worker(root, data, repeats, warmups, seed):
                              "encode_p95_ms": percentile(enc), "decode_p95_ms": percentile(dec)})
                 samples.append({"case_id": name, "path": path, "encode_ms": enc, "decode_ms": dec})
     return {"rows": rows, "samples": samples,
-            "source": {"commit": git(root, "rev-parse", "HEAD"),
-                       "dirty": bool(git(root, "status", "--porcelain", "--untracked-files=no")),
+            "source": {"commit": git(root, "rev-parse", "HEAD") if (root / ".git").exists() else None,
+                       "dirty": bool(git(root, "status", "--porcelain", "--untracked-files=no"))
+                       if (root / ".git").exists() else None,
                        "files": {name: sha(root / name) for name in SOURCE_FILES}},
             "environment": {"python": platform.python_version(), "platform": platform.platform(),
                             "machine": platform.machine(), "numpy": np.__version__,
@@ -195,12 +196,16 @@ def check_results(out, data):
     manifest = json.loads((out / "manifest.json").read_text())
     if manifest["baseline"] != BASELINE or manifest["payloads_sha256"] != DATA_SHA:
         raise ValueError("wrong baseline or real dataset")
+    if manifest["sources"]["before"]["commit"] != BASELINE or manifest["sources"]["before"]["dirty"]:
+        raise ValueError("invalid measured baseline source")
     if set(manifest["files"]) != {"measurements.csv", "summary.csv", "samples.json"}:
         raise ValueError("missing result files")
     for name, digest in manifest["files"].items():
         if sha(out / name) != digest:
             raise ValueError(f"result checksum mismatch: {name}")
     root = Path(__file__).resolve().parents[1]
+    if manifest["sources"]["after"]["files"] != {name: sha(root / name) for name in SOURCE_FILES}:
+        raise ValueError("current codec files differ from the measured implementation")
     current = worker(root, data, repeats=1, warmups=1, seed=0)
     references = {(r["case_id"], r["path"]): r for r in current["rows"]}
     rounds, repeats = manifest["rounds"], manifest["repeats"]

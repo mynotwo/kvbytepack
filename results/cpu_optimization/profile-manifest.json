@@ -1,0 +1,8 @@
+{
+  "scope": "separate diagnostic profiles, not formal timing samples",
+  "files": {
+    "profile_driver.py": "685215db18e39ea2ad86b1b298e418e280ea44d532fb6848f4215cd99afb0500",
+    "profile-before.json": "4903aa705826d9e865f535892f430cab5b7630d48d36112413c7540ccde61d04",
+    "profile-after.json": "fcbd5fd90b478176c25327de944bf04f5b28b3d81a82caa8e93544eb4161fefd"
+  }
+}

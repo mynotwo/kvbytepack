@@ -1,4 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+import sys
 
 import numpy as np
 import pytest
@@ -76,3 +78,47 @@ def test_paired_summary_uses_full_context_and_rounds():
         assert row["paired_speedup_median"] == row["paired_speedup_min"] == row["paired_speedup_max"] == 2
         assert row["before_sum_medians_ms"] == (48 if row["phase"] == "encode" else 96)
         assert row["after_sum_medians_ms"] == row["before_sum_medians_ms"] / 2
+
+
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="pinned AIBrix module requires Python 3.10")
+def test_published_cpu_comparison_matches_actual_payloads_and_samples():
+    from bench.compare_cpu import check_results
+    root = Path(__file__).resolve().parents[1]
+    check_results(root / "results/cpu_optimization", root / "results/aibrix_layout/model_capture")
+
+
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="pinned AIBrix module requires Python 3.10")
+@pytest.mark.parametrize("damage", ["missing_row", "wrong_wire_hash", "invalid_sample"])
+def test_invalid_comparisons_rejected_even_with_recomputed_file_hash(tmp_path, damage):
+    import csv
+    import hashlib
+    import io
+    import json
+    from bench.compare_cpu import check_results
+    root = Path(__file__).resolve().parents[1]
+    source = root / "results/cpu_optimization"
+    for name in ("measurements.csv", "summary.csv", "samples.json", "manifest.json"):
+        (tmp_path / name).write_bytes((source / name).read_bytes())
+    manifest = json.loads((tmp_path / "manifest.json").read_text())
+    if damage == "invalid_sample":
+        path = tmp_path / "samples.json"
+        samples = json.loads(path.read_text())
+        samples[0]["encode_ms"][0] = float("nan")
+        path.write_text(json.dumps(samples))
+    else:
+        path = tmp_path / "measurements.csv"
+        with path.open() as file:
+            rows = list(csv.DictReader(file))
+        if damage == "missing_row":
+            rows.pop()
+        else:
+            rows[0]["encoded_sha256"] = "0" * 64
+        text = io.StringIO(newline="")
+        writer = csv.DictWriter(text, fieldnames=list(rows[0]), lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+        path.write_text(text.getvalue())
+    manifest["files"][path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError):
+        check_results(tmp_path, root / "results/aibrix_layout/model_capture")
