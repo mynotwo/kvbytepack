@@ -1,0 +1,23 @@
+{
+  "absent_evidence": [
+    "original tensor bytes",
+    "per-layer compressed byte counts",
+    "capture environment and model revisions",
+    "timings",
+    "per-blob round-trip verification records"
+  ],
+  "cells": 50,
+  "files": {
+    "measurements.csv": "df73571baf40f3b51e7b759ad790706ce7d7f0f24da74f3e09aed1902f2f42f3",
+    "summary.csv": "44fb45a0ad5a784d5c1b1c3bce39bbafb4ec998462cc8cc4eb959754ad5bf9f2"
+  },
+  "input_protocol": "repeated paragraphs, not independent real-text documents",
+  "measurement_rows": 18000,
+  "ratio_definition": "uncompressed bytes / compressed payload bytes; excludes plane headers",
+  "schema_version": 1,
+  "scope": "historical aggregate statistics; no fresh model capture",
+  "source": "results/kv_aggregate_qwen.json",
+  "source_commit": "83a478d51d3d12a17d511977ef2af9c5a02bae6d",
+  "source_sha256": "f466824433e8b2de6e71f873a958dde6c896d0af63764fd0ed9dd3c9162606c8",
+  "summary_rows": 8
+}

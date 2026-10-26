@@ -19,9 +19,9 @@ from collections import defaultdict
 import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from kvzip.codec import available_methods, decode, encode, payload_size  # noqa: E402
-from kvzip.formats import FORMATS, to_format_bytes  # noqa: E402
-from kvzip.inputs import INPUT_TYPES  # noqa: E402
+from kvbytepack.codec import available_methods, decode, encode, payload_size  # noqa: E402
+from kvbytepack.formats import FORMATS, to_format_bytes  # noqa: E402
+from kvbytepack.inputs import INPUT_TYPES  # noqa: E402
 
 
 def byte_entropy(data):
@@ -93,7 +93,7 @@ def main():
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    from kvzip.capture import capture
+    from kvbytepack.capture import capture
 
     methods = args.methods or available_methods()
     want_kv = args.target in ("kv", "both")

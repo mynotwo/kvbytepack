@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from kvzip.codec import (available_methods, byte_merge, byte_split, decode, encode,  # noqa: E402
+from kvbytepack.codec import (available_methods, byte_merge, byte_split, decode, encode,  # noqa: E402
                          payload_size, transpose_bytes, untranspose_bytes)
 
 

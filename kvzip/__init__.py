@@ -1,5 +1,3 @@
-from .codec import available_methods, decode, encode, payload_size
-from .tensor import unzip_tensor, zip_tensor
-
-__all__ = ["zip_tensor", "unzip_tensor", "encode", "decode", "payload_size",
-           "available_methods"]
+"""Compatibility imports for the former mynotwo/kvzip project."""
+from kvbytepack import *  # noqa: F401,F403
+from kvbytepack import __all__

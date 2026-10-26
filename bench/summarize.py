@@ -26,13 +26,10 @@ def load_cells(path):
             yield d["formats"]
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("path", nargs="?", default="results/raw")
-    args = ap.parse_args()
-
+def collect_rows(cells):
+    """Shared aggregation for printed and exported summaries."""
     rows = defaultdict(lambda: defaultdict(list))
-    for cell in load_cells(args.path):
+    for cell in cells:
         for fmt, scopes in cell.items():
             for scope in ("KV", "act"):
                 r = scopes.get(scope)
@@ -46,6 +43,16 @@ def main():
                 for m in ("raw_zstd-1", "bytesplit+zstd-1", "pipeline_zstd-1"):
                     if m in r:
                         acc[m].append(r[m])
+
+    return rows
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("path", nargs="?", default="results/raw")
+    args = ap.parse_args()
+
+    rows = collect_rows(load_cells(args.path))
 
     print(f"{'scope':<5} {'fmt':<9} {'n':>3} {'best(med)':>9} {'range':>13} "
           f"{'zstd-1':>7} {'bs+zstd':>7} {'pipe':>7} {'lift':>6}")
