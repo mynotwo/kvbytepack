@@ -49,14 +49,16 @@ def _zstd1_compress(data):
         _zstd_local.compressing = False
 
 
-def _zstd_decompress(data, **kwargs):
+def _zstd_decompress(data, max_output_size=0, allow_extra_data=True):
     if not hasattr(_zstd_local, "decompressor"):
         _zstd_local.decompressor = zstd.ZstdDecompressor()
     if getattr(_zstd_local, "decompressing", False):
-        return zstd.ZstdDecompressor().decompress(data, **kwargs)
+        return zstd.ZstdDecompressor().decompress(
+            data, max_output_size=max_output_size, allow_extra_data=allow_extra_data)
     _zstd_local.decompressing = True
     try:
-        return _zstd_local.decompressor.decompress(data, **kwargs)
+        return _zstd_local.decompressor.decompress(
+            data, max_output_size=max_output_size, allow_extra_data=allow_extra_data)
     finally:
         _zstd_local.decompressing = False
 
