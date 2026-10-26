@@ -16,7 +16,7 @@ import sys
 import tempfile
 import time
 
-BASELINE = "1d8a4764681e1449cc5e4d2a6681d51a2f2eddd0"
+BASELINE = "65fe9f83680cb8ddc80cb8186ecea86741e76b1f"
 DATA_SHA = "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211"
 PATHS = ("pipeline_codec", "numpy_tensor", "layout_record", "raw_zstd1_control")
 SOURCE_FILES = ("kvbytepack/codec.py", "kvbytepack/tensor.py", "examples/aibrix_layout/adapter.py")

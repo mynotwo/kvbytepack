@@ -14,6 +14,7 @@ pipeline_<codec>     byte split applied to channel-first bytes (the main method)
 import gzip
 import lzma
 import struct
+import threading
 
 import numpy as np
 import zstandard as zstd
@@ -32,7 +33,37 @@ except ImportError:
     _snappy = None
 
 
+_zstd_local = threading.local()
+
+
+def _zstd1_compress(data):
+    # Contexts are lazy and private to each calling thread, never shared scratch.
+    if not hasattr(_zstd_local, "compressor"):
+        _zstd_local.compressor = zstd.ZstdCompressor(level=1)
+    if getattr(_zstd_local, "compressing", False):
+        return zstd.ZstdCompressor(level=1).compress(data)
+    _zstd_local.compressing = True
+    try:
+        return _zstd_local.compressor.compress(data)
+    finally:
+        _zstd_local.compressing = False
+
+
+def _zstd_decompress(data, **kwargs):
+    if not hasattr(_zstd_local, "decompressor"):
+        _zstd_local.decompressor = zstd.ZstdDecompressor()
+    if getattr(_zstd_local, "decompressing", False):
+        return zstd.ZstdDecompressor().decompress(data, **kwargs)
+    _zstd_local.decompressing = True
+    try:
+        return _zstd_local.decompressor.decompress(data, **kwargs)
+    finally:
+        _zstd_local.decompressing = False
+
+
 def _zstd(level):
+    if level == 1:
+        return _zstd1_compress, _zstd_decompress
     return (lambda d: zstd.ZstdCompressor(level=level).compress(d),
             lambda d: zstd.ZstdDecompressor().decompress(d))
 

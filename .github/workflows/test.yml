@@ -23,8 +23,8 @@ jobs:
         run: |
           python -m examples.aibrix_layout.benchmark --check results/aibrix_layout
           python -m examples.aibrix_layout.capture --check results/aibrix_layout/model_capture
-          python bench/compare_cpu.py --check results/cpu_optimization
-          git fetch origin 1d8a4764681e1449cc5e4d2a6681d51a2f2eddd0
+          python bench/compare_cpu.py --check results/cpu_context_reuse
+          git fetch origin 65fe9f83680cb8ddc80cb8186ecea86741e76b1f
           git worktree add --detach "$RUNNER_TEMP/kvbytepack-before" FETCH_HEAD
           python bench/compare_cpu.py --baseline-dir "$RUNNER_TEMP/kvbytepack-before" --rounds 2 --repeats 3 --warmups 1 --out-dir "$RUNNER_TEMP/cpu-comparison"
           python -m examples.aibrix_layout.benchmark --repeats 3 --out-dir "$RUNNER_TEMP/aibrix-layout"
