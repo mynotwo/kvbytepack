@@ -14,6 +14,7 @@ pipeline_<codec>     byte split applied to channel-first bytes (the main method)
 import gzip
 import lzma
 import struct
+import threading
 
 import numpy as np
 import zstandard as zstd
@@ -32,7 +33,39 @@ except ImportError:
     _snappy = None
 
 
+_zstd_local = threading.local()
+
+
+def _zstd1_compress(data):
+    # Contexts are lazy and private to each calling thread, never shared scratch.
+    if not hasattr(_zstd_local, "compressor"):
+        _zstd_local.compressor = zstd.ZstdCompressor(level=1)
+    if getattr(_zstd_local, "compressing", False):
+        return zstd.ZstdCompressor(level=1).compress(data)
+    _zstd_local.compressing = True
+    try:
+        return _zstd_local.compressor.compress(data)
+    finally:
+        _zstd_local.compressing = False
+
+
+def _zstd_decompress(data, max_output_size=0, allow_extra_data=True):
+    if not hasattr(_zstd_local, "decompressor"):
+        _zstd_local.decompressor = zstd.ZstdDecompressor()
+    if getattr(_zstd_local, "decompressing", False):
+        return zstd.ZstdDecompressor().decompress(
+            data, max_output_size=max_output_size, allow_extra_data=allow_extra_data)
+    _zstd_local.decompressing = True
+    try:
+        return _zstd_local.decompressor.decompress(
+            data, max_output_size=max_output_size, allow_extra_data=allow_extra_data)
+    finally:
+        _zstd_local.decompressing = False
+
+
 def _zstd(level):
+    if level == 1:
+        return _zstd1_compress, _zstd_decompress
     return (lambda d: zstd.ZstdCompressor(level=level).compress(d),
             lambda d: zstd.ZstdDecompressor().decompress(d))
 
@@ -86,9 +119,12 @@ def transpose_split(raw, S, D, bpe):
     """Produce the existing channel-major byte planes in a single layout pass."""
     if bpe < 1:
         return [raw]
+    return [p.tobytes() for p in _transpose_plane_array(raw, S, D, bpe)]
+
+
+def _transpose_plane_array(raw, S, D, bpe):
     arr = np.frombuffer(raw, dtype=np.uint8).reshape(S, D, int(bpe))
-    return [np.ascontiguousarray(arr[:, :, i].T).tobytes()
-            for i in range(int(bpe))]
+    return np.ascontiguousarray(arr.transpose(2, 1, 0))
 
 
 def merge_untranspose(planes, S, D, bpe):
@@ -139,7 +175,11 @@ def encode(raw, S, D, bpe, method):
         return comp(raw)
     if layout == "transpose":
         return comp(transpose_bytes(raw, S, D, bpe))
-    planes = transpose_split(raw, S, D, bpe) if layout == "pipeline" else byte_split(raw, bpe)
+    if layout == "pipeline" and comp is _zstd1_compress and isinstance(raw, bytes) and bpe >= 1:
+        # Native Zstd accepts contiguous buffers: avoid serializing each plane again.
+        planes = [memoryview(p) for p in _transpose_plane_array(raw, S, D, bpe)]
+    else:
+        planes = transpose_split(raw, S, D, bpe) if layout == "pipeline" else byte_split(raw, bpe)
     return _pack([comp(p) for p in planes])
 
 

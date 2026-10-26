@@ -1,0 +1,6 @@
+{
+  "compressor_native_bytes": 501049,
+  "decompressor_native_bytes": 95968,
+  "scope": "retained level-1 contexts in one thread after one sweep of the same 96 payloads; excludes Python objects and returned buffers",
+  "cpu": "Apple M4 Pro"
+}

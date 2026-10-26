@@ -1,5 +1,9 @@
 # CPU layout-pass optimization
 
+This is the historical v0.2.1 study. Run its reproduction commands at tag
+`v0.2.1`; the [current follow-up](cpu-context-reuse.md) uses a new baseline and
+a separate result directory. Historical measurements below remain unchanged.
+
 Version 0.2.1 fuses channel transposition with byte splitting during encoding,
 and interleaves decoded planes directly into token-major output during decoding.
 It reuses the existing codecs, method names, KVZ1/KBL1 formats and checksums.

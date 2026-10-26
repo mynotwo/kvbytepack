@@ -84,7 +84,7 @@ def test_paired_summary_uses_full_context_and_rounds():
 def test_published_cpu_comparison_matches_actual_payloads_and_samples():
     from bench.compare_cpu import check_results
     root = Path(__file__).resolve().parents[1]
-    check_results(root / "results/cpu_optimization", root / "results/aibrix_layout/model_capture")
+    check_results(root / "results/cpu_context_reuse", root / "results/aibrix_layout/model_capture")
 
 
 @pytest.mark.skipif(sys.version_info < (3, 10), reason="pinned AIBrix module requires Python 3.10")
@@ -96,7 +96,7 @@ def test_invalid_comparisons_rejected_even_with_recomputed_file_hash(tmp_path, d
     import json
     from bench.compare_cpu import check_results
     root = Path(__file__).resolve().parents[1]
-    source = root / "results/cpu_optimization"
+    source = root / "results/cpu_context_reuse"
     for name in ("measurements.csv", "summary.csv", "samples.json", "manifest.json"):
         (tmp_path / name).write_bytes((source / name).read_bytes())
     manifest = json.loads((tmp_path / "manifest.json").read_text())

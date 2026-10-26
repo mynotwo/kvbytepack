@@ -108,12 +108,19 @@ python bench/summarize.py results/raw
 
 ## CPU layout performance
 
-[Version 0.2.1 measurements](docs/cpu-optimization.md) compare the same 96 real
+[Version 0.2.1 measurements](https://github.com/mynotwo/kvbytepack/blob/v0.2.1/docs/cpu-optimization.md) compare the same 96 real
 KV payloads against the previous implementation in six balanced rounds.
 Core encoding is 1.61–1.85× faster and decoding 2.11–2.44× faster on the measured
 Apple M4 Pro. Complete records retain their metadata/checksum checks and improve
 as well. Every before/after encoded byte and stored size matches; all timed
 decodes restore the original bytes. These are CPU-call measurements.
+
+The [follow-up against v0.2.1](docs/cpu-context-reuse.md) reuses level-1 contexts
+per thread and passes contiguous planes directly to native Zstd. Across 12
+paired rounds on the same 96 payloads, complete-record encoding time falls by
+6.6% / 3.1% at 128/512 tokens. Decode changes are small and round ranges cross
+1.0×. Wire bytes stay identical; warm contexts retain about 0.57 MiB per active
+thread on this corpus. Full results include unchanged controls and limitations.
 
 ## AIBrix interface experiment
 
