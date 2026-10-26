@@ -94,3 +94,26 @@ def test_bad_compressor_input_releases_busy_flag():
         codec._zstd1_compress(None)
     assert not codec._zstd_local.compressing
     assert codec._zstd_decompress(codec._zstd1_compress(b"valid after error")) == b"valid after error"
+
+
+def test_strict_and_permissive_decode_options_do_not_leak_between_calls():
+    raw = b"independent options" * 32
+    frame = zstd.ZstdCompressor(level=1).compress(raw) + b"trailing"
+    assert codec._zstd_decompress(frame) == raw
+    with pytest.raises(zstd.ZstdError):
+        codec._zstd_decompress(frame, allow_extra_data=False)
+    assert codec._zstd_decompress(frame) == raw
+
+
+def test_custom_codec_and_mutable_inputs_keep_byte_plane_contract(monkeypatch):
+    seen = []
+    compress, decompress = codec.CODECS["zstd-1"]
+    def bytes_only(data):
+        assert isinstance(data, bytes)
+        seen.append(data)
+        return compress(data)
+    raw = bytes(range(32))
+    expected = codec.encode(raw, 4, 4, 2, "pipeline_zstd-1")
+    monkeypatch.setitem(codec.CODECS, "zstd-1", (bytes_only, decompress))
+    assert codec.encode(bytearray(raw), 4, 4, 2, "pipeline_zstd-1") == expected
+    assert seen == codec.transpose_split(raw, 4, 4, 2)

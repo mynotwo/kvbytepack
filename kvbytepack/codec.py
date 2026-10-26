@@ -175,7 +175,7 @@ def encode(raw, S, D, bpe, method):
         return comp(raw)
     if layout == "transpose":
         return comp(transpose_bytes(raw, S, D, bpe))
-    if layout == "pipeline" and comp is _zstd1_compress and bpe >= 1:
+    if layout == "pipeline" and comp is _zstd1_compress and isinstance(raw, bytes) and bpe >= 1:
         # Native Zstd accepts contiguous buffers: avoid serializing each plane again.
         planes = [memoryview(p) for p in _transpose_plane_array(raw, S, D, bpe)]
     else:
