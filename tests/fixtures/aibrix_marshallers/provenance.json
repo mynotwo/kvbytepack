@@ -1,0 +1,16 @@
+{
+  "repository": "vllm-project/aibrix",
+  "revision": "d459142cee4a75a3a84a6e504ea1add5b490a87a",
+  "license": "Apache-2.0",
+  "scope": "two unmodified modules; not a complete AIBrix installation",
+  "files": {
+    "marshaller.py": {
+      "sha256": "6c2124c289592778cfecaeb4cff9509d36eb6e1475e6f675fbdad7d4fd5d7514",
+      "url": "https://github.com/vllm-project/aibrix/blob/d459142cee4a75a3a84a6e504ea1add5b490a87a/python/aibrix_kvcache/aibrix_kvcache/l2/marshallers/marshaller.py"
+    },
+    "zstd_compressor.py": {
+      "sha256": "ab1827bac8957abfb26da2d8d060fafe4c8091b98edd346ccd90c49b7607df6c",
+      "url": "https://github.com/vllm-project/aibrix/blob/d459142cee4a75a3a84a6e504ea1add5b490a87a/python/aibrix_kvcache/aibrix_kvcache/l2/marshallers/zstd_compressor.py"
+    }
+  }
+}

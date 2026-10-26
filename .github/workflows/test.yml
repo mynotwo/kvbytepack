@@ -18,6 +18,12 @@ jobs:
         run: |
           python -c "import importlib.util; assert importlib.util.find_spec('torch') is None"
           python -m kvbytepack
+      - name: AIBrix isolated contract and complete-record experiment
+        if: matrix.python == '3.12'
+        run: |
+          python -m examples.aibrix_layout.benchmark --check results/aibrix_layout
+          python -m examples.aibrix_layout.capture --check results/aibrix_layout/model_capture
+          python -m examples.aibrix_layout.benchmark --repeats 3 --out-dir "$RUNNER_TEMP/aibrix-layout"
       - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
         if: matrix.python == '3.12'
       - run: python -m pytest -q tests
