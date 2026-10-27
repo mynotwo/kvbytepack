@@ -11,3 +11,5 @@ recursive-include results/cpu_optimization *.csv *.json *.py
 recursive-include results/cpu_context_reuse *.csv *.json *.py
 recursive-include results/cpu_decode *.csv *.json
 include kvbytepack/_decode.c setup.py
+recursive-include docs/assets kv-cost-tradeoff.png kv-cost-tradeoff.svg
+recursive-include results/cost_model *.csv *.json
