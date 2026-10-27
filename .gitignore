@@ -5,3 +5,6 @@ results/raw/
 .agent-harness/
 NOTICE-REVIEW.md
 *.egg-info/
+build/
+*.so
+*.pyd
