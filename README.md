@@ -240,6 +240,14 @@ is a separate experimental integration. Whole-model output equivalence remains
 under investigation. The codec studies do not establish production capacity,
 GPU/hybrid generality, concurrency benefits or codec/transfer overlap.
 
+## Independent evaluation
+
+Working on KV serialization or offloading? [Verify the public records or measure
+your CPU](docs/independent-evaluation.md), then [share a reproduction report](https://github.com/mynotwo/kvbytepack/issues/new?template=independent-evaluation.yml).
+Independent x86/Linux measurements and negative results are especially useful.
+No serving integration is required; an archived-result check is distinct from a
+fresh timing run.
+
 ## Tests
 
 ```bash
