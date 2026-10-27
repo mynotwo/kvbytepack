@@ -1,0 +1,18 @@
+{
+  "source": "results/cpu_decode/measurements.csv",
+  "variant": "after",
+  "source_sha256": "bd666fe93524166bff3c1ef312bd8d7d8c30a84c54a51553d583093d1a718417",
+  "paths": [
+    "raw_zstd1_control",
+    "layout_record"
+  ],
+  "formula": "(candidate_cpu_s + candidate_bytes/B) / (baseline_cpu_s + baseline_bytes/B)",
+  "bandwidth_unit": "GB/s decimal; B is bytes/second",
+  "rounds": 12,
+  "aggregation": "per round sum of 48 per-payload median encode+decode times; median/min/max of 12 round cost ratios",
+  "limits": "serial non-overlapped warm CPU encode-transfer-decode model; baseline is a bare Zstd frame without KBL1 metadata or its SHA256 check; candidate includes that envelope and validation; not measured network/serving performance; range is not a confidence interval",
+  "files": {
+    "summary.csv": "1f2d3acb801d9698205fff34aa04287d37ad5aa99e7e794626e05ad7300df7a5",
+    "curves.csv": "f932ed680916f5ba7da15d3e29cf61345fb3dd9d55bf9a15443c39c7c80fda0a"
+  }
+}

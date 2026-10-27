@@ -111,6 +111,27 @@ Use bytes, bytes/second and seconds consistently. This condition does not model
 queueing, overlap, concurrency, or the rest of a serving request. A smaller
 compressed payload alone cannot establish a faster system.
 
+![Serial-transfer model comparing complete layout records with raw Zstd at assumed link bandwidths](docs/assets/kv-cost-tradeoff.png)
+
+In this model, median round break-even bandwidths are about **0.054 / 0.100 GB/s**
+for the 128/512-token prefixes. Above those thresholds, the extra CPU cost
+outweighs the stored-byte savings on this measured CPU. The shaded bands span
+the twelve rounds; they are not confidence intervals or network measurements.
+The control is a bare Zstd frame; the candidate includes KBL1 metadata, SHA256
+and strict checks. Their validation contracts differ, so this comparison is not
+a feature-matched production recommendation.
+[Derived inputs and assumptions](results/cost_model) ·
+[Vector figure](docs/assets/kv-cost-tradeoff.svg)
+
+Recompute the model exports from the published timing rows with Python's
+standard library. Only redrawing the PNG/SVG needs the optional Matplotlib tool:
+
+```bash
+python3 bench/plot_cost_tradeoff.py --check
+# Optional figure redraw in an environment with matplotlib installed:
+python bench/plot_cost_tradeoff.py --plot
+```
+
 For your own data, start with `zip_tensor` / `unzip_tensor` above, verify
 `tobytes()` equality, then measure complete blob size and both codec phases
 against your chosen baseline. [Capture instructions](docs/reproduce.md) cover
