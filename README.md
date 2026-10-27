@@ -1,16 +1,37 @@
 # KVBytePack
 
-**Byte-exact compression of KV-cache and activation tensors through layout transforms and general-purpose codecs.**
+**When do smaller KV records pay for their codec cost?**
 
-KV tensors carry structure across channels and byte planes. KVBytePack rearranges
-those bytes before compression, then reverses the transformation on decode.
-It preserves the supplied representation, including NaN payloads and signed zero.
+KVBytePack studies how byte layout changes the cost of storing and moving
+inference state. It combines byte-exact tensor codecs with public measurements
+of complete record size, encode/decode time and per-thread memory. The goal is
+to make the tradeoff measurable on your system.
+
+[CPU entry](#try-it-without-a-gpu) · [Real KV records](#start-with-the-real-kv-records) ·
+[Cost model](#decide-whether-compression-pays) · [AIBrix contract study](docs/aibrix-layout.md)
+
+KV tensors carry structure across channels and byte planes. Rearranging those
+bytes can help a general-purpose codec; reversing the permutation restores the
+supplied representation, including NaN payloads and signed zero. The codec does
+not select or discard tokens.
 
 Formerly **mynotwo/kvzip**. This project is independent of
-[SNU's KVzip](https://github.com/snu-mllab/KVzip), which studies query-agnostic
-KV-cache eviction. KVBytePack does not select or discard tokens.
-The old `kvzip` Python imports remain compatible; the blob format is unchanged.
+[SNU's KVzip](https://github.com/snu-mllab/KVzip), which studies KV-cache eviction.
+Existing `kvzip` imports and blob formats remain compatible.
 See [migration and reproduction](docs/reproduce.md).
+
+## What to measure
+
+| Question | Evidence in this repository |
+|---|---|
+| Are the supplied tensor bytes preserved? | A weight-free CPU check, tensor APIs and before/after wire hashes |
+| Does a smaller payload also mean a smaller stored record? | Real BF16 records with metadata, framing and integrity overhead included |
+| Do saved bytes justify CPU and memory costs? | Matched raw-Zstd controls, encode/decode samples and per-thread memory observations |
+
+The real-record study uses one small model and overlapping prefixes. It shows
+both savings and their costs: smaller records still require more CPU than the
+matched raw-Zstd control. These are component measurements, not a serving-speed
+or whole-model-equivalence result.
 
 ## Try it without a GPU
 
@@ -47,7 +68,68 @@ The high-level blob stores method, shape and dtype. The low-level
 `encode(raw, S, D, bpe, method)` / `decode(...)` API requires those parameters
 from the caller. Neither API is a streaming or random-access storage format.
 
-## Inspect the public experiment results
+## Start with the real KV records
+
+The repository includes the original **96 Qwen2.5-0.5B BF16 K/V payloads**:
+all 24 layers at overlapping 128/512-token prefixes of one public CPython file.
+You can inspect the bytes and measurements without loading a model.
+
+For this record study, use Python 3.12 and the measured codec versions:
+
+```bash
+python -m pip install -e . numpy==2.5.4 zstandard==0.25.0
+python bench/compare_cpu.py --check results/cpu_decode
+```
+
+The check verifies all 9,216 published before/after measurement rows against the
+original payloads, encoded hashes, timing samples and aggregation. It reports
+whether the current decoder uses the optional C kernel or NumPy fallback; it
+does not rerun historical timings. No PyTorch, model weights or GPU is needed.
+
+- [Original payloads and provenance](results/aibrix_layout/model_capture)
+- [Complete-record size and AIBrix interface study](docs/aibrix-layout.md)
+- [Current decode study, timing protocol and memory accounting](docs/cpu-decode.md)
+- [All paired samples, controls and source/binary hashes](results/cpu_decode)
+
+The optional C inverse reduces layout reconstruction cost; a compiler is needed
+for that path, while NumPy remains the installation and correctness fallback.
+[The guide](docs/cpu-decode.md#install-and-reproduce-without-a-gpu) separates
+building the kernel, verifying stored results and rerunning timings.
+
+## Decide whether compression pays
+
+Choose a baseline first: uncompressed bytes or a matched codec such as raw
+Zstd at the same level. Include the entire stored record and all added CPU work.
+For one serial, non-overlapped transfer, a necessary condition is:
+
+```text
+(baseline_stored_bytes - candidate_stored_bytes) / bandwidth
+    > candidate_encode_decode_time - baseline_encode_decode_time
+```
+
+Use bytes, bytes/second and seconds consistently. This condition does not model
+queueing, overlap, concurrency, or the rest of a serving request. A smaller
+compressed payload alone cannot establish a faster system.
+
+For your own data, start with `zip_tensor` / `unzip_tensor` above, verify
+`tobytes()` equality, then measure complete blob size and both codec phases
+against your chosen baseline. [Capture instructions](docs/reproduce.md) cover
+new model data. A useful reproduction reports dtype/layout, codec versions,
+hardware, byte counts, timing protocol and a small public input if available.
+
+## Read the implementation studies
+
+- [Layout-pass fusion, v0.2.1](https://github.com/mynotwo/kvbytepack/blob/v0.2.1/docs/cpu-optimization.md)
+- [Context reuse against v0.2.1](docs/cpu-context-reuse.md)
+- [512-token decode against the context-reuse revision](docs/cpu-decode.md)
+
+Each study identifies its own baseline. Their speedups should not be multiplied
+into an end-to-end claim. Earlier data and negative observations remain public.
+
+## Historical multi-model results
+
+<details>
+<summary>Inspect the 50-cell ratio archive and its limits</summary>
 
 The repository includes a historical aggregate for Qwen2.5-7B and Qwen3-8B:
 2 models × 5 context lengths (512–8192) × 5 input types = **50 cells**.
@@ -91,6 +173,9 @@ per-layer byte counts or per-blob verification records. Recomputing these
 statistics verifies the public aggregate, not the original model capture.
 The CPU smoke check independently exercises the current codec implementation.
 
+
+</details>
+
 ## Capture new model data
 
 [Reproduction guide](docs/reproduce.md) covers a bounded one-cell capture,
@@ -105,40 +190,6 @@ python bench/run_bench.py --models Qwen/Qwen2.5-7B --target kv \
   --methods raw_zstd-1 pipeline_zstd-1 --device cpu --out results/raw
 python bench/summarize.py results/raw
 ```
-
-## CPU layout performance
-
-[Version 0.2.1 measurements](https://github.com/mynotwo/kvbytepack/blob/v0.2.1/docs/cpu-optimization.md) compare the same 96 real
-KV payloads against the previous implementation in six balanced rounds.
-Core encoding is 1.61–1.85× faster and decoding 2.11–2.44× faster on the measured
-Apple M4 Pro. Complete records retain their metadata/checksum checks and improve
-as well. Every before/after encoded byte and stored size matches; all timed
-decodes restore the original bytes. These are CPU-call measurements.
-
-The [follow-up against v0.2.1](docs/cpu-context-reuse.md) reuses level-1 contexts
-per thread and passes contiguous planes directly to native Zstd. Across 12
-paired rounds on the same 96 payloads, complete-record encoding time falls by
-6.6% / 3.1% at 128/512 tokens. Decode changes are small and round ranges cross
-1.0×. Wire bytes stay identical; warm contexts retain about 0.57 MiB per active
-thread on this corpus. Full results include unchanged controls and limitations.
-
-The [512-token decode study](docs/cpu-decode.md) compares an optional compiled
-byte-layout kernel with the context-reuse revision above. On the same 96
-payloads, complete-record decode is 1.205× faster at 512 tokens (17.0% less time),
-with identical bytes and checksums. Measured native contexts remain about
-0.57 MiB per thread; the tracked temporary decode peak falls by about 128 KiB
-for the measured 512-token record. A NumPy fallback remains available when the
-optional C kernel cannot be built. Full results include compiler requirements,
-per-thread memory checks and the limits of these CPU measurements.
-
-## AIBrix interface experiment
-
-A [CPU contract experiment](docs/aibrix-layout.md) compares complete record sizes
-and encode/decode costs against AIBrix's pinned Zstd marshaller. It includes
-nine synthetic cases and a fresh Qwen2.5-0.5B capture of all 24 layers' K/V at
-128/512 tokens, with original bytes. All 420 case/path rows round-trip. Layout
-reduces complete stored size in 94/96 model payloads but adds CPU cost; this is
-an inspectable downstream prototype, not a serving-speed claim.
 
 ## How the layout works
 
@@ -156,22 +207,17 @@ The codec operates on bytes, without arithmetic on tensor values.
 ## Scope and related work
 
 The [benchmark website](https://mynotwo.github.io/kvcache-bench/) is a separate
-presentation with additional historical tables. This release's reproducible
-public evidence is the pinned aggregate and the checks linked above.
+presentation with additional historical tables. The frozen records, manifests
+and ratio archive linked above are this repository's public evidence.
 Earlier README tables for real-text KV, activations, nvCOMP and AIBrix restore
-timings are preserved in [the original revision](https://github.com/mynotwo/kvbytepack/blob/83a478d51d3d12a17d511977ef2af9c5a02bae6d/README.md).
-Their underlying captures are not bundled here, so they are not promoted as
-reproduced results in this release.
+timings remain in [the original revision](https://github.com/mynotwo/kvbytepack/blob/83a478d51d3d12a17d511977ef2af9c5a02bae6d/README.md).
+Their underlying captures are not bundled here, so they are not presented as
+reproduced by the current entry points.
 
 [AIBrix hybrid KV-cache work](https://github.com/mynotwo/aibrix-hybrid-kvcache)
-is experimental. Whole-model output equivalence remains under investigation.
-This repository does not establish end-to-end serving acceleration, production
-capacity, concurrency benefits, or codec/transfer overlap.
-
-Transfer savings help only if codec and layout cost fit the serving path.
-For a non-overlapped transfer, a necessary break-even condition is
-`encode_time + decode_time < raw_bytes / bandwidth - stored_bytes / bandwidth`.
-The public ratio archive alone cannot answer that timing question.
+is a separate experimental integration. Whole-model output equivalence remains
+under investigation. The codec studies do not establish production capacity,
+GPU/hybrid generality, concurrency benefits or codec/transfer overlap.
 
 ## Tests
 
