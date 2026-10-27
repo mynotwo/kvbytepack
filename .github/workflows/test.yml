@@ -32,6 +32,18 @@ jobs:
       - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
         if: matrix.python == '3.12'
       - run: python -m pytest -q tests
+      - name: Verify no-compiler wheel and source fallback
+        if: matrix.python == '3.12'
+        run: |
+          git archive --format=tar HEAD -o "$RUNNER_TEMP/kvbytepack-source.tar"
+          mkdir "$RUNNER_TEMP/kvbytepack-fallback"
+          tar -xf "$RUNNER_TEMP/kvbytepack-source.tar" -C "$RUNNER_TEMP/kvbytepack-fallback"
+          CC=false python -m pip wheel "$RUNNER_TEMP/kvbytepack-fallback" --no-deps --wheel-dir "$RUNNER_TEMP/fallback-dist"
+          python -m pip install --force-reinstall --no-deps "$RUNNER_TEMP"/fallback-dist/kvbytepack-*.whl
+          cd "$RUNNER_TEMP"
+          python -c "from kvbytepack.codec import _native_merge; assert _native_merge is None"
+          python -m kvbytepack
+          python "$RUNNER_TEMP/kvbytepack-fallback/bench/compare_cpu.py" --check "$RUNNER_TEMP/kvbytepack-fallback/results/cpu_decode"
       - name: Build and test the installed wheel outside the checkout
         run: |
           pip wheel . --no-deps --wheel-dir dist

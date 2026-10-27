@@ -1,0 +1,291 @@
+{
+  "payloads_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "backend": "c-8x8",
+  "profile": {
+    "scope": "all 48 512-token records, 60 decode-only sweeps",
+    "total_seconds": 0.39035516699999995,
+    "functions": [
+      {
+        "name": "<method 'decompress' of 'zstandard.backend_c.ZstdDecompressor' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.162163573,
+        "cumulative_seconds": 0.162163573
+      },
+      {
+        "name": "<built-in method _hashlib.openssl_sha256>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.085380433,
+        "cumulative_seconds": 0.085380433
+      },
+      {
+        "name": "<built-in method kvbytepack._decode.merge_bf16>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.067136105,
+        "cumulative_seconds": 0.067136105
+      },
+      {
+        "name": "unpack",
+        "module": "adapter.py",
+        "calls": 2880,
+        "self_seconds": 0.025392878,
+        "cumulative_seconds": 0.37368942400000005
+      },
+      {
+        "name": "run",
+        "module": "profile_decode.py",
+        "calls": 1,
+        "self_seconds": 0.016638993,
+        "cumulative_seconds": 0.39032841700000004
+      },
+      {
+        "name": "_unpack",
+        "module": "codec.py",
+        "calls": 2880,
+        "self_seconds": 0.006434993000000001,
+        "cumulative_seconds": 0.007341987
+      },
+      {
+        "name": "_zstd_decompress",
+        "module": "codec.py",
+        "calls": 5760,
+        "self_seconds": 0.0024786170000000002,
+        "cumulative_seconds": 0.16564282000000002
+      },
+      {
+        "name": "decode",
+        "module": "decoder.py",
+        "calls": 2880,
+        "self_seconds": 0.0019213110000000002,
+        "cumulative_seconds": 0.00505743
+      },
+      {
+        "name": "loads",
+        "module": "__init__.py",
+        "calls": 2880,
+        "self_seconds": 0.0018899700000000001,
+        "cumulative_seconds": 0.010105540000000001
+      },
+      {
+        "name": "merge_untranspose",
+        "module": "codec.py",
+        "calls": 2880,
+        "self_seconds": 0.001661074,
+        "cumulative_seconds": 0.070567587
+      },
+      {
+        "name": "<built-in method _struct.unpack_from>",
+        "module": "~",
+        "calls": 14400,
+        "self_seconds": 0.001656191,
+        "cumulative_seconds": 0.001656191
+      },
+      {
+        "name": "raw_decode",
+        "module": "decoder.py",
+        "calls": 2880,
+        "self_seconds": 0.0014865520000000001,
+        "cumulative_seconds": 0.0014865520000000001
+      },
+      {
+        "name": "<built-in method builtins.len>",
+        "module": "~",
+        "calls": 23040,
+        "self_seconds": 0.0014527320000000002,
+        "cumulative_seconds": 0.0014527320000000002
+      },
+      {
+        "name": "detect_encoding",
+        "module": "__init__.py",
+        "calls": 2880,
+        "self_seconds": 0.001400441,
+        "cumulative_seconds": 0.002384415
+      },
+      {
+        "name": "__str__",
+        "module": "_dtype.py",
+        "calls": 2880,
+        "self_seconds": 0.0011272740000000002,
+        "cumulative_seconds": 0.0013265120000000002
+      },
+      {
+        "name": "dtype",
+        "module": "adapter.py",
+        "calls": 2880,
+        "self_seconds": 0.0010269180000000001,
+        "cumulative_seconds": 0.0010269180000000001
+      },
+      {
+        "name": "<method 'match' of 're.Pattern' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.001010082,
+        "cumulative_seconds": 0.001010082
+      },
+      {
+        "name": "<built-in method builtins.any>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.0008931550000000001,
+        "cumulative_seconds": 0.001580933
+      },
+      {
+        "name": "<method 'append' of 'list' objects>",
+        "module": "~",
+        "calls": 11520,
+        "self_seconds": 0.0008887830000000001,
+        "cumulative_seconds": 0.0008887830000000001
+      },
+      {
+        "name": "<built-in method builtins.all>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000862937,
+        "cumulative_seconds": 0.001570898
+      },
+      {
+        "name": "<method 'digest' of '_hashlib.HASH' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000848014,
+        "cumulative_seconds": 0.000848014
+      },
+      {
+        "name": "<method 'startswith' of 'bytes' objects>",
+        "module": "~",
+        "calls": 8640,
+        "self_seconds": 0.0008246900000000001,
+        "cumulative_seconds": 0.0008246900000000001
+      },
+      {
+        "name": "<genexpr>",
+        "module": "codec.py",
+        "calls": 8640,
+        "self_seconds": 0.000707961,
+        "cumulative_seconds": 0.000707961
+      },
+      {
+        "name": "<genexpr>",
+        "module": "adapter.py",
+        "calls": 8640,
+        "self_seconds": 0.000687778,
+        "cumulative_seconds": 0.000687778
+      },
+      {
+        "name": "<built-in method builtins.isinstance>",
+        "module": "~",
+        "calls": 8640,
+        "self_seconds": 0.000640258,
+        "cumulative_seconds": 0.000640258
+      },
+      {
+        "name": "<built-in method zstandard.backend_c.frame_content_size>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.0006224430000000001,
+        "cumulative_seconds": 0.0006224430000000001
+      },
+      {
+        "name": "<built-in method builtins.hasattr>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.000585105,
+        "cumulative_seconds": 0.000585105
+      },
+      {
+        "name": "<method 'end' of 're.Match' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.00043554600000000003,
+        "cumulative_seconds": 0.00043554600000000003
+      },
+      {
+        "name": "<built-in method builtins.getattr>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.00041552500000000003,
+        "cumulative_seconds": 0.00041552500000000003
+      },
+      {
+        "name": "<method 'decode' of 'bytes' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.00035458900000000004,
+        "cumulative_seconds": 0.00035458900000000004
+      },
+      {
+        "name": "<built-in method builtins.sum>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000305763,
+        "cumulative_seconds": 0.000305763
+      },
+      {
+        "name": "<method 'get' of 'dict' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000293856,
+        "cumulative_seconds": 0.000293856
+      },
+      {
+        "name": "<built-in method _hashlib.compare_digest>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.00027148,
+        "cumulative_seconds": 0.00027148
+      },
+      {
+        "name": "raw_bytes",
+        "module": "adapter.py",
+        "calls": 2880,
+        "self_seconds": 0.000233159,
+        "cumulative_seconds": 0.000233159
+      },
+      {
+        "name": "<built-in method builtins.issubclass>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.00019923800000000002,
+        "cumulative_seconds": 0.00019923800000000002
+      },
+      {
+        "name": "<method 'disable' of '_lsprof.Profiler' objects>",
+        "module": "~",
+        "calls": 1,
+        "self_seconds": 2.6750000000000003e-05,
+        "cumulative_seconds": 2.6750000000000003e-05
+      }
+    ]
+  },
+  "memory_case": "ctx512_V_23",
+  "raw_bytes": 131072,
+  "tracked_peak_bytes": {
+    "encode": 578405,
+    "decode": 536834
+  },
+  "retained_native_contexts": [
+    {
+      "thread": 0,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    },
+    {
+      "thread": 1,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    },
+    {
+      "thread": 2,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    },
+    {
+      "thread": 3,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    }
+  ],
+  "scope": "tracked peak above a warm process in one thread, median of 7 calls; native contexts separately measured in 4 simultaneously alive threads after the full corpus; excludes OS thread stacks and other untracked native allocations"
+}

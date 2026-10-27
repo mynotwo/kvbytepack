@@ -122,6 +122,15 @@ paired rounds on the same 96 payloads, complete-record encoding time falls by
 1.0×. Wire bytes stay identical; warm contexts retain about 0.57 MiB per active
 thread on this corpus. Full results include unchanged controls and limitations.
 
+The [512-token decode study](docs/cpu-decode.md) compares an optional compiled
+byte-layout kernel with the context-reuse revision above. On the same 96
+payloads, complete-record decode is 1.205× faster at 512 tokens (17.0% less time),
+with identical bytes and checksums. Measured native contexts remain about
+0.57 MiB per thread; the tracked temporary decode peak falls by about 128 KiB
+for the measured 512-token record. A NumPy fallback remains available when the
+optional C kernel cannot be built. Full results include compiler requirements,
+per-thread memory checks and the limits of these CPU measurements.
+
 ## AIBrix interface experiment
 
 A [CPU contract experiment](docs/aibrix-layout.md) compares complete record sizes

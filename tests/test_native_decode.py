@@ -105,3 +105,16 @@ def test_parallel_native_calls_have_independent_output():
         return True
     with ThreadPoolExecutor(max_workers=4) as pool:
         assert all(pool.map(exercise, range(4)))
+
+
+@pytest.mark.parametrize("damage", ["backend", "binary_sha256"])
+def test_missing_native_measurement_provenance_is_rejected(tmp_path, damage):
+    import json
+    from pathlib import Path
+    from bench.compare_cpu import check_results
+    root = Path(__file__).resolve().parents[1]
+    manifest = json.loads((root / "results/cpu_decode/manifest.json").read_text())
+    manifest["sources"]["after"][damage] = None
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="native"):
+        check_results(tmp_path, root / "results/aibrix_layout/model_capture")

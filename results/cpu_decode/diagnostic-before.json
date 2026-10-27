@@ -1,0 +1,298 @@
+{
+  "payloads_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "backend": "numpy",
+  "profile": {
+    "scope": "all 48 512-token records, 60 decode-only sweeps",
+    "total_seconds": 0.45963100000000007,
+    "functions": [
+      {
+        "name": "<method 'decompress' of 'zstandard.backend_c.ZstdDecompressor' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.16227592500000002,
+        "cumulative_seconds": 0.16227592500000002
+      },
+      {
+        "name": "merge_untranspose",
+        "module": "codec.py",
+        "calls": 2880,
+        "self_seconds": 0.12834256200000002,
+        "cumulative_seconds": 0.139896079
+      },
+      {
+        "name": "<built-in method _hashlib.openssl_sha256>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.08530325300000001,
+        "cumulative_seconds": 0.08530325300000001
+      },
+      {
+        "name": "unpack",
+        "module": "adapter.py",
+        "calls": 2880,
+        "self_seconds": 0.026028127,
+        "cumulative_seconds": 0.44357723000000004
+      },
+      {
+        "name": "run",
+        "module": "profile_decode.py",
+        "calls": 1,
+        "self_seconds": 0.016041104,
+        "cumulative_seconds": 0.459618334
+      },
+      {
+        "name": "<method 'tobytes' of 'numpy.ndarray' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.006997975,
+        "cumulative_seconds": 0.006997975
+      },
+      {
+        "name": "_unpack",
+        "module": "codec.py",
+        "calls": 2880,
+        "self_seconds": 0.0063051900000000004,
+        "cumulative_seconds": 0.007228024
+      },
+      {
+        "name": "_zstd_decompress",
+        "module": "codec.py",
+        "calls": 5760,
+        "self_seconds": 0.00242879,
+        "cumulative_seconds": 0.165709387
+      },
+      {
+        "name": "decode",
+        "module": "decoder.py",
+        "calls": 2880,
+        "self_seconds": 0.0019703940000000003,
+        "cumulative_seconds": 0.005036784000000001
+      },
+      {
+        "name": "loads",
+        "module": "__init__.py",
+        "calls": 2880,
+        "self_seconds": 0.001894365,
+        "cumulative_seconds": 0.010073534
+      },
+      {
+        "name": "<built-in method numpy.frombuffer>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.0018080050000000001,
+        "cumulative_seconds": 0.0018080050000000001
+      },
+      {
+        "name": "<built-in method _struct.unpack_from>",
+        "module": "~",
+        "calls": 14400,
+        "self_seconds": 0.001677686,
+        "cumulative_seconds": 0.001677686
+      },
+      {
+        "name": "<built-in method numpy.empty>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.0016037640000000001,
+        "cumulative_seconds": 0.0016037640000000001
+      },
+      {
+        "name": "<built-in method builtins.len>",
+        "module": "~",
+        "calls": 23040,
+        "self_seconds": 0.001461557,
+        "cumulative_seconds": 0.001461557
+      },
+      {
+        "name": "raw_decode",
+        "module": "decoder.py",
+        "calls": 2880,
+        "self_seconds": 0.0014560480000000002,
+        "cumulative_seconds": 0.0014560480000000002
+      },
+      {
+        "name": "detect_encoding",
+        "module": "__init__.py",
+        "calls": 2880,
+        "self_seconds": 0.0013863780000000002,
+        "cumulative_seconds": 0.002368265
+      },
+      {
+        "name": "__str__",
+        "module": "_dtype.py",
+        "calls": 2880,
+        "self_seconds": 0.001167765,
+        "cumulative_seconds": 0.001363377
+      },
+      {
+        "name": "dtype",
+        "module": "adapter.py",
+        "calls": 2880,
+        "self_seconds": 0.000988869,
+        "cumulative_seconds": 0.000988869
+      },
+      {
+        "name": "<method 'match' of 're.Pattern' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.0009643840000000001,
+        "cumulative_seconds": 0.0009643840000000001
+      },
+      {
+        "name": "<built-in method builtins.any>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.0009578690000000001,
+        "cumulative_seconds": 0.0016913540000000002
+      },
+      {
+        "name": "<method 'reshape' of 'numpy.ndarray' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.0009417360000000001,
+        "cumulative_seconds": 0.0009417360000000001
+      },
+      {
+        "name": "<method 'append' of 'list' objects>",
+        "module": "~",
+        "calls": 11520,
+        "self_seconds": 0.0008901330000000001,
+        "cumulative_seconds": 0.0008901330000000001
+      },
+      {
+        "name": "<method 'digest' of '_hashlib.HASH' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.0008302930000000001,
+        "cumulative_seconds": 0.0008302930000000001
+      },
+      {
+        "name": "<method 'startswith' of 'bytes' objects>",
+        "module": "~",
+        "calls": 8640,
+        "self_seconds": 0.0008213690000000001,
+        "cumulative_seconds": 0.0008213690000000001
+      },
+      {
+        "name": "<genexpr>",
+        "module": "adapter.py",
+        "calls": 8640,
+        "self_seconds": 0.0007334850000000001,
+        "cumulative_seconds": 0.0007334850000000001
+      },
+      {
+        "name": "<built-in method zstandard.backend_c.frame_content_size>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.000624938,
+        "cumulative_seconds": 0.000624938
+      },
+      {
+        "name": "<built-in method builtins.isinstance>",
+        "module": "~",
+        "calls": 8640,
+        "self_seconds": 0.000618982,
+        "cumulative_seconds": 0.000618982
+      },
+      {
+        "name": "<built-in method builtins.hasattr>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.000588273,
+        "cumulative_seconds": 0.000588273
+      },
+      {
+        "name": "<method 'end' of 're.Match' objects>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.000444614,
+        "cumulative_seconds": 0.000444614
+      },
+      {
+        "name": "<built-in method builtins.getattr>",
+        "module": "~",
+        "calls": 5760,
+        "self_seconds": 0.000416399,
+        "cumulative_seconds": 0.000416399
+      },
+      {
+        "name": "<method 'decode' of 'bytes' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000363405,
+        "cumulative_seconds": 0.000363405
+      },
+      {
+        "name": "<built-in method builtins.sum>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000309753,
+        "cumulative_seconds": 0.000309753
+      },
+      {
+        "name": "<method 'get' of 'dict' objects>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000276607,
+        "cumulative_seconds": 0.000276607
+      },
+      {
+        "name": "<built-in method _hashlib.compare_digest>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000264588,
+        "cumulative_seconds": 0.000264588
+      },
+      {
+        "name": "raw_bytes",
+        "module": "adapter.py",
+        "calls": 2880,
+        "self_seconds": 0.00023813700000000003,
+        "cumulative_seconds": 0.00023813700000000003
+      },
+      {
+        "name": "<built-in method builtins.issubclass>",
+        "module": "~",
+        "calls": 2880,
+        "self_seconds": 0.000195612,
+        "cumulative_seconds": 0.000195612
+      },
+      {
+        "name": "<method 'disable' of '_lsprof.Profiler' objects>",
+        "module": "~",
+        "calls": 1,
+        "self_seconds": 1.2666e-05,
+        "cumulative_seconds": 1.2666e-05
+      }
+    ]
+  },
+  "memory_case": "ctx512_V_23",
+  "raw_bytes": 131072,
+  "tracked_peak_bytes": {
+    "encode": 578405,
+    "decode": 667966
+  },
+  "retained_native_contexts": [
+    {
+      "thread": 0,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    },
+    {
+      "thread": 1,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    },
+    {
+      "thread": 2,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    },
+    {
+      "thread": 3,
+      "compressor_bytes": 501049,
+      "decompressor_bytes": 95968
+    }
+  ],
+  "scope": "tracked peak above a warm process in one thread, median of 7 calls; native contexts separately measured in 4 simultaneously alive threads after the full corpus; excludes OS thread stacks and other untracked native allocations"
+}

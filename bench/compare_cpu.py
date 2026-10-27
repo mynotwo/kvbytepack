@@ -165,6 +165,8 @@ def run(args):
                 if completed.returncode:
                     raise RuntimeError(completed.stdout + completed.stderr)
                 result = json.loads(output.read_text())
+                if variant == "after" and result["source"]["backend"] != "c-8x8":
+                    raise ValueError("candidate timings require the native decode backend")
                 if variant in sources and result["source"] != sources[variant]:
                     raise ValueError("source changed during measurement")
                 sources[variant] = result["source"]
@@ -209,6 +211,11 @@ def check_results(out, data):
         raise ValueError("wrong baseline or real dataset")
     if manifest["sources"]["before"]["commit"] != BASELINE or manifest["sources"]["before"]["dirty"]:
         raise ValueError("invalid measured baseline source")
+    source = manifest["sources"]["after"]
+    if source.get("backend") != "c-8x8" or not isinstance(source.get("binary_sha256"), str):
+        raise ValueError("missing native decode provenance")
+    if len(source["binary_sha256"]) != 64 or any(c not in "0123456789abcdef" for c in source["binary_sha256"]):
+        raise ValueError("invalid native binary hash")
     if set(manifest["files"]) != {"measurements.csv", "summary.csv", "samples.json"}:
         raise ValueError("missing result files")
     for name, digest in manifest["files"].items():

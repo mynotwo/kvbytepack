@@ -2,3 +2,5 @@ results/cpu_optimization/samples.json linguist-generated=true
 results/cpu_optimization/measurements.csv linguist-generated=true
 results/cpu_context_reuse/samples.json linguist-generated=true
 results/cpu_context_reuse/measurements.csv linguist-generated=true
+results/cpu_decode/samples.json linguist-generated=true
+results/cpu_decode/measurements.csv linguist-generated=true
