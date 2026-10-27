@@ -1,0 +1,64 @@
+name: Independent evaluation
+description: Report a byte check, fresh CPU measurement, mismatch or negative result.
+title: '[Reproduction]: '
+body:
+- type: markdown
+  attributes:
+    value: Thank you for trying KVBytePack. Archived-result verification is different from fresh timing.
+      Negative results are useful. Do not upload private KV bytes, prompts, model weights or credentials.
+- type: dropdown
+  id: kind
+  attributes:
+    label: What did you run?
+    options:
+    - Public-record verification (no new timing)
+    - Fresh paired CPU timing
+    - Own-workload experiment
+    - Installation or byte mismatch
+  validations:
+    required: true
+- type: input
+  id: revision
+  attributes:
+    label: Source commit
+    description: Paste git rev-parse HEAD; include the baseline commit for a comparison.
+  validations:
+    required: true
+- type: textarea
+  id: environment
+  attributes:
+    label: Machine and active backend
+    description: CPU model, OS, Python, NumPy, Zstandard, compiler if relevant, c-8x8 or NumPy, and competing
+      load. Avoid a full environment dump.
+  validations:
+    required: true
+- type: textarea
+  id: commands
+  attributes:
+    label: Commands you actually ran
+    description: Keep commands minimal and remove credentials or private paths.
+    render: shell
+  validations:
+    required: true
+- type: textarea
+  id: results
+  attributes:
+    label: Observed result
+    description: Pass/failure output. For fresh timings attach the manifest, summary and unfiltered results,
+      including the raw-Zstd control. Keep all negative rounds and describe any protocol changes.
+  validations:
+    required: true
+- type: input
+  id: discovery
+  attributes:
+    label: Where did you find KVBytePack? (optional)
+    description: 'For example: LMCache discussion, technical article or a repository link.'
+- type: checkboxes
+  id: evidence
+  attributes:
+    label: Evidence scope
+    options:
+    - label: I ran the reported commands and distinguish archived verification from fresh timing.
+      required: true
+    - label: I removed private inputs and credentials from this report.
+      required: true
