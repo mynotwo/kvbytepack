@@ -16,10 +16,11 @@ import sys
 import tempfile
 import time
 
-BASELINE = "65fe9f83680cb8ddc80cb8186ecea86741e76b1f"
+BASELINE = "98f56cc16fe46195d70730e99ac64b754d5f75ad"
 DATA_SHA = "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211"
 PATHS = ("pipeline_codec", "numpy_tensor", "layout_record", "raw_zstd1_control")
-SOURCE_FILES = ("kvbytepack/codec.py", "kvbytepack/tensor.py", "examples/aibrix_layout/adapter.py")
+SOURCE_FILES = ("kvbytepack/codec.py", "kvbytepack/tensor.py", "examples/aibrix_layout/adapter.py",
+                "kvbytepack/_decode.c", "setup.py")
 
 
 def sha(path):
@@ -39,6 +40,7 @@ def worker(root, data, repeats, warmups, seed):
     import numpy as np
     import zstandard as zstd
     import kvbytepack
+    from kvbytepack import codec
     from examples.aibrix_layout import adapter
     from examples.aibrix_layout.capture import check
     if root not in Path(kvbytepack.__file__).resolve().parents or root not in Path(adapter.__file__).resolve().parents:
@@ -90,11 +92,17 @@ def worker(root, data, repeats, warmups, seed):
                              "encode_median_ms": st.median(enc), "decode_median_ms": st.median(dec),
                              "encode_p95_ms": percentile(enc), "decode_p95_ms": percentile(dec)})
                 samples.append({"case_id": name, "path": path, "encode_ms": enc, "decode_ms": dec})
+    native = getattr(codec, "_native_merge", None)
+    native_file = Path(sys.modules[native.__module__].__file__).resolve() if native else None
+    if native_file and root not in native_file.parents:
+        raise ValueError("native kernel imported from the wrong checkout")
     return {"rows": rows, "samples": samples,
             "source": {"commit": git(root, "rev-parse", "HEAD") if (root / ".git").exists() else None,
                        "dirty": bool(git(root, "status", "--porcelain", "--untracked-files=no"))
                        if (root / ".git").exists() else None,
-                       "files": {name: sha(root / name) for name in SOURCE_FILES}},
+                       "files": {name: sha(root / name) if (root / name).exists() else None for name in SOURCE_FILES},
+                       "backend": "c-8x8" if native else "numpy",
+                       "binary_sha256": sha(native_file) if native_file else None},
             "environment": {"python": platform.python_version(), "platform": platform.platform(),
                             "machine": platform.machine(), "numpy": np.__version__,
                             "zstandard": zstd.__version__, "zstd_runtime": list(zstd.ZSTD_VERSION),
@@ -135,6 +143,9 @@ def csv_data(rows):
 def run(args):
     root = Path(__file__).resolve().parents[1]
     baseline, data = args.baseline_dir.resolve(), args.data_dir.resolve()
+    from kvbytepack.codec import _native_merge
+    if _native_merge is None:
+        raise ValueError("build the optional native kernel before timing this experiment")
     if git(baseline, "rev-parse", "HEAD") != BASELINE or git(baseline, "status", "--porcelain"):
         raise ValueError("baseline must be a clean checkout of the pinned release commit")
     if args.rounds % 2:
@@ -154,6 +165,8 @@ def run(args):
                 if completed.returncode:
                     raise RuntimeError(completed.stdout + completed.stderr)
                 result = json.loads(output.read_text())
+                if variant == "after" and result["source"]["backend"] != "c-8x8":
+                    raise ValueError("candidate timings require the native decode backend")
                 if variant in sources and result["source"] != sources[variant]:
                     raise ValueError("source changed during measurement")
                 sources[variant] = result["source"]
@@ -198,13 +211,18 @@ def check_results(out, data):
         raise ValueError("wrong baseline or real dataset")
     if manifest["sources"]["before"]["commit"] != BASELINE or manifest["sources"]["before"]["dirty"]:
         raise ValueError("invalid measured baseline source")
+    source = manifest["sources"]["after"]
+    if source.get("backend") != "c-8x8" or not isinstance(source.get("binary_sha256"), str):
+        raise ValueError("missing native decode provenance")
+    if len(source["binary_sha256"]) != 64 or any(c not in "0123456789abcdef" for c in source["binary_sha256"]):
+        raise ValueError("invalid native binary hash")
     if set(manifest["files"]) != {"measurements.csv", "summary.csv", "samples.json"}:
         raise ValueError("missing result files")
     for name, digest in manifest["files"].items():
         if sha(out / name) != digest:
             raise ValueError(f"result checksum mismatch: {name}")
     root = Path(__file__).resolve().parents[1]
-    if manifest["sources"]["after"]["files"] != {name: sha(root / name) for name in SOURCE_FILES}:
+    if manifest["sources"]["after"]["files"] != {name: sha(root / name) if (root / name).exists() else None for name in SOURCE_FILES}:
         raise ValueError("current codec files differ from the measured implementation")
     current = worker(root, data, repeats=1, warmups=1, seed=0)
     references = {(r["case_id"], r["path"]): r for r in current["rows"]}
@@ -245,6 +263,7 @@ def check_results(out, data):
         raise ValueError("incomplete measurements")
     if csv_data(summarize(rows)) != (out / "summary.csv").read_bytes():
         raise ValueError("paired summary mismatch")
+    print("Current verification backend:", current["source"]["backend"])
     print(f"Checked {len(rows)} before/after rows, original bytes and unchanged encodings; historical speed not rerun")
 
 

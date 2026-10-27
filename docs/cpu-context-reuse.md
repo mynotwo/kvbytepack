@@ -1,5 +1,9 @@
 # CPU context reuse and plane buffers
 
+This historical study uses revision `98f56cc16fe46195d70730e99ac64b754d5f75ad`.
+Run its commands at that revision; the [decode follow-up](cpu-decode.md) uses a
+new baseline and a separate result directory. Historical results are unchanged.
+
 This follow-up compares the current implementation with **v0.2.1**, rather than
 reusing the older layout-pass baseline. It reduces warm level-1 Zstd context
 setup and avoids serializing contiguous byte planes a second time before native

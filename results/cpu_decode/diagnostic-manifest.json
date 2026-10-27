@@ -1,0 +1,9 @@
+{
+  "driver_sha256": "5da27a51f8560e49552346e867f60dc7eff71bd844415ef0efa8ae2435302048",
+  "files": {
+    "diagnostic-before.json": "c8013de48788c82638cda73ae12a298160bd79f0b3d886d964d5a699284b3022",
+    "diagnostic-after.json": "5c2ae9259c4f27dfdfdc24b7d3af7652dfaeb672e612d45f34f58f6e97c936c1",
+    "memory.json": "9707907cf2e057c6888ab27f30ee5520ce9c58a146cf168343867fd941af0b49"
+  },
+  "scope": "separate instrumented diagnostics, not timing-table samples"
+}

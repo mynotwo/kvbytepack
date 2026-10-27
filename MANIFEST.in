@@ -9,3 +9,5 @@ recursive-include results/aibrix_layout *.csv *.json
 recursive-include results/aibrix_layout/model_capture *.npz *.txt PYTHON-LICENSE
 recursive-include results/cpu_optimization *.csv *.json *.py
 recursive-include results/cpu_context_reuse *.csv *.json *.py
+recursive-include results/cpu_decode *.csv *.json
+include kvbytepack/_decode.c setup.py

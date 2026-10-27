@@ -1,0 +1,90 @@
+{
+  "payloads_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "case": "ctx512_V_23",
+  "raw_bytes": 131072,
+  "before": {
+    "tracked_peak_bytes": {
+      "encode": 578405,
+      "decode": 667966
+    },
+    "retained_contexts_per_thread": [
+      {
+        "thread": 0,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      },
+      {
+        "thread": 1,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      },
+      {
+        "thread": 2,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      },
+      {
+        "thread": 3,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      }
+    ]
+  },
+  "after": {
+    "tracked_peak_bytes": {
+      "encode": 578405,
+      "decode": 536834
+    },
+    "retained_contexts_per_thread": [
+      {
+        "thread": 0,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      },
+      {
+        "thread": 1,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      },
+      {
+        "thread": 2,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      },
+      {
+        "thread": 3,
+        "compressor_bytes": 501049,
+        "decompressor_bytes": 95968
+      }
+    ]
+  },
+  "scope": "tracked peak above a warm process in one thread, median of 7 calls; native contexts separately measured in 4 simultaneously alive threads after the full corpus; excludes OS thread stacks and other untracked native allocations",
+  "source_files": {
+    "before": {
+      "commit": "98f56cc16fe46195d70730e99ac64b754d5f75ad",
+      "dirty": false,
+      "files": {
+        "kvbytepack/codec.py": "abef832db9f492e23095ee8cb5890817eee89a3e544dd9eab9a058c72544dcc9",
+        "kvbytepack/tensor.py": "8ef2abf5eea60a13e3a5e0ef85ce45d142e9bf793480546ab4b5a95bf90a490c",
+        "examples/aibrix_layout/adapter.py": "17890e825329b524eddeca8b1790d3ddd082ff235ce00633234ac5cc5303159f",
+        "kvbytepack/_decode.c": null,
+        "setup.py": null
+      },
+      "backend": "numpy",
+      "binary_sha256": null
+    },
+    "after": {
+      "commit": "c6b4d5e694368c986a21bedb12bcdc09c03df48c",
+      "dirty": false,
+      "files": {
+        "kvbytepack/codec.py": "fd96a216d61f3153526fedbe0dcc253c592a9590f6b9bd5246a55397f5ff98e5",
+        "kvbytepack/tensor.py": "8ef2abf5eea60a13e3a5e0ef85ce45d142e9bf793480546ab4b5a95bf90a490c",
+        "examples/aibrix_layout/adapter.py": "17890e825329b524eddeca8b1790d3ddd082ff235ce00633234ac5cc5303159f",
+        "kvbytepack/_decode.c": "52c6e1f41334edc002f2ab0a7aad2b02fbaf650d45189c1131d448a2c34f18ff",
+        "setup.py": "f91182e27e524b3a2a6643dfe4acaf85a5d6bc2173b6d1a8961fd5cc978b9e08"
+      },
+      "backend": "c-8x8",
+      "binary_sha256": "2cf39873dbd672d24b06d638b1eea4c5d0c076c987a93d0cb6a022692be424c1"
+    }
+  }
+}

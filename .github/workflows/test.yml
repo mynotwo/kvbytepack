@@ -13,28 +13,42 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Recompute archived results without third-party dependencies
         run: python bench/export_results.py --check
-      - run: pip install '.[test,codecs]'
+      - run: pip install -e '.[test,codecs]'
       - name: CPU entry without PyTorch
         run: |
           python -c "import importlib.util; assert importlib.util.find_spec('torch') is None"
           python -m kvbytepack
+          python -c "from kvbytepack.codec import _native_merge; assert _native_merge is not None"
       - name: AIBrix isolated contract and complete-record experiment
         if: matrix.python == '3.12'
         run: |
           python -m examples.aibrix_layout.benchmark --check results/aibrix_layout
           python -m examples.aibrix_layout.capture --check results/aibrix_layout/model_capture
-          python bench/compare_cpu.py --check results/cpu_context_reuse
-          git fetch origin 65fe9f83680cb8ddc80cb8186ecea86741e76b1f
+          python bench/compare_cpu.py --check results/cpu_decode
+          git fetch origin 98f56cc16fe46195d70730e99ac64b754d5f75ad
           git worktree add --detach "$RUNNER_TEMP/kvbytepack-before" FETCH_HEAD
           python bench/compare_cpu.py --baseline-dir "$RUNNER_TEMP/kvbytepack-before" --rounds 2 --repeats 3 --warmups 1 --out-dir "$RUNNER_TEMP/cpu-comparison"
           python -m examples.aibrix_layout.benchmark --repeats 3 --out-dir "$RUNNER_TEMP/aibrix-layout"
       - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
         if: matrix.python == '3.12'
       - run: python -m pytest -q tests
+      - name: Verify no-compiler wheel and source fallback
+        if: matrix.python == '3.12'
+        run: |
+          git archive --format=tar HEAD -o "$RUNNER_TEMP/kvbytepack-source.tar"
+          mkdir "$RUNNER_TEMP/kvbytepack-fallback"
+          tar -xf "$RUNNER_TEMP/kvbytepack-source.tar" -C "$RUNNER_TEMP/kvbytepack-fallback"
+          CC=false python -m pip wheel "$RUNNER_TEMP/kvbytepack-fallback" --no-deps --wheel-dir "$RUNNER_TEMP/fallback-dist"
+          python -m pip install --force-reinstall --no-deps "$RUNNER_TEMP"/fallback-dist/kvbytepack-*.whl
+          cd "$RUNNER_TEMP"
+          python -c "from kvbytepack.codec import _native_merge; assert _native_merge is None"
+          python -m kvbytepack
+          python "$RUNNER_TEMP/kvbytepack-fallback/bench/compare_cpu.py" --check "$RUNNER_TEMP/kvbytepack-fallback/results/cpu_decode"
       - name: Build and test the installed wheel outside the checkout
         run: |
           pip wheel . --no-deps --wheel-dir dist
           pip install --force-reinstall --no-deps dist/kvbytepack-*.whl
           cd "$RUNNER_TEMP"
           python -m kvbytepack
+          python -c "from kvbytepack.codec import _native_merge; assert _native_merge is not None"
           python -c "import kvbytepack, kvzip, kvzip.codec; assert kvzip.encode is kvbytepack.encode; assert kvzip.codec is kvbytepack.codec"

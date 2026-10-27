@@ -20,6 +20,11 @@ import numpy as np
 import zstandard as zstd
 
 try:
+    from ._decode import merge_bf16 as _native_merge
+except ImportError:
+    _native_merge = None
+
+try:
     import lz4.frame as _lz4
 except ImportError:
     _lz4 = None
@@ -134,6 +139,8 @@ def merge_untranspose(planes, S, D, bpe):
     width = int(bpe)
     if len(planes) != width:
         raise ValueError("plane count does not match bytes per element")
+    if width == 2 and _native_merge is not None and all(type(p) is bytes for p in planes):
+        return _native_merge(planes[0], planes[1], S, D)
     arr = np.empty((S, D, width), dtype=np.uint8)
     for i, plane in enumerate(planes):
         arr[:, :, i] = np.frombuffer(plane, dtype=np.uint8).reshape(D, S).T
