@@ -1,0 +1,812 @@
+{
+  "corpus_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "cuda_runtime": "12.6",
+  "event_only_samples": [
+    {
+      "mode": "gpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.10512000322341919,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.219200000166893,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9045119881629944,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.02521600015461445,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.011392000131309032,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.17443199455738068,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.05475199967622757,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.949184000492096,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.019936000928282738,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.011327999643981457,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.18060800433158875,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.05648000165820122,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9085440039634705,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.020735999569296837,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01119999960064888,
+          "stage": "d2d_merge_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "alignment_query_host": 1.719253,
+        "array_descriptor_host": 0.347973,
+        "config_host_call": 0.450977,
+        "d2d_merge_copy_submit": 0.06704,
+        "decode_host_call": 2.746784,
+        "frame_header_host": 0.103364,
+        "h2d_copy_submit": 0.05429,
+        "pin_memory_host": 0.361014,
+        "sync_host_wait": 0.015787,
+        "torch_empty_host": 0.050428,
+        "torch_frombuffer_host": 0.024133
+      },
+      "wall_ms": 10.997801
+    },
+    {
+      "mode": "cpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.13171200454235077,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2556479871273041,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2569279968738556,
+          "stage": "h2d_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "cpu_byte_merge": 4.253948,
+        "cpu_zstd_decode": 6.504451,
+        "h2d_copy_submit": 0.042731,
+        "pin_memory_host": 0.289172,
+        "sync_host_wait": 0.586637,
+        "torch_frombuffer_host": 0.017273
+      },
+      "wall_ms": 14.91016
+    },
+    {
+      "mode": "cpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.13631999492645264,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2414720058441162,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2197439968585968,
+          "stage": "h2d_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "cpu_byte_merge": 4.26284,
+        "cpu_zstd_decode": 6.474357,
+        "h2d_copy_submit": 0.035711,
+        "pin_memory_host": 0.282064,
+        "sync_host_wait": 0.548429,
+        "torch_frombuffer_host": 0.014493
+      },
+      "wall_ms": 14.777059
+    },
+    {
+      "mode": "gpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.08211199939250946,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2189439982175827,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9021440148353577,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.022175999358296394,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.011136000044643879,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.15353600680828094,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.0562559999525547,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9082559943199158,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.020287999883294106,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01119999960064888,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.16828800737857819,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.05564799904823303,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9105280041694641,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.019711999222636223,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01104000024497509,
+          "stage": "d2d_merge_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "alignment_query_host": 1.714207,
+        "array_descriptor_host": 0.207287,
+        "config_host_call": 0.41218,
+        "d2d_merge_copy_submit": 0.06358,
+        "decode_host_call": 2.706246,
+        "frame_header_host": 0.101926,
+        "h2d_copy_submit": 0.052542,
+        "pin_memory_host": 0.314379,
+        "sync_host_wait": 0.015557,
+        "torch_empty_host": 0.049609,
+        "torch_frombuffer_host": 0.023494
+      },
+      "wall_ms": 10.593512
+    },
+    {
+      "mode": "gpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.07472000271081924,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.21305599808692932,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9217919707298279,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.021983999758958817,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01119999960064888,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.15619200468063354,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.07116799801588058,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9525759816169739,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.020447999238967896,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01119999960064888,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.17219200730323792,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.05641600117087364,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.894815981388092,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.01942400075495243,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01235199999064207,
+          "stage": "d2d_merge_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "alignment_query_host": 1.687091,
+        "array_descriptor_host": 0.196032,
+        "config_host_call": 0.43792,
+        "d2d_merge_copy_submit": 0.064498,
+        "decode_host_call": 2.754299,
+        "frame_header_host": 0.105502,
+        "h2d_copy_submit": 0.053398,
+        "pin_memory_host": 0.331262,
+        "sync_host_wait": 0.015043,
+        "torch_empty_host": 0.048906,
+        "torch_frombuffer_host": 0.023497
+      },
+      "wall_ms": 10.676876
+    },
+    {
+      "mode": "cpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.11267200112342834,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2178879976272583,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2027519941329956,
+          "stage": "h2d_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "cpu_byte_merge": 4.255021,
+        "cpu_zstd_decode": 6.456048,
+        "h2d_copy_submit": 0.040883,
+        "pin_memory_host": 0.274184,
+        "sync_host_wait": 0.483517,
+        "torch_frombuffer_host": 0.017636
+      },
+      "wall_ms": 14.68863
+    },
+    {
+      "mode": "cpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.107744000852108,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.19484800100326538,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.20559999346733093,
+          "stage": "h2d_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "cpu_byte_merge": 4.240678,
+        "cpu_zstd_decode": 6.419437,
+        "h2d_copy_submit": 0.035355,
+        "pin_memory_host": 0.277929,
+        "sync_host_wait": 0.460203,
+        "torch_frombuffer_host": 0.014979
+      },
+      "wall_ms": 14.536775
+    },
+    {
+      "mode": "gpu",
+      "stage_cuda_event_spans_ms": [
+        {
+          "elapsed_ms": 0.08057600259780884,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.21638399362564087,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9169920086860657,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.020959999412298203,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.011136000044643879,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.15062400698661804,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.05676800012588501,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9475200176239014,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.018783999606966972,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.01158399973064661,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.15318399667739868,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.054655998945236206,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9499199986457825,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.019328000023961067,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.011487999930977821,
+          "stage": "d2d_merge_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "alignment_query_host": 1.713556,
+        "array_descriptor_host": 0.205903,
+        "config_host_call": 0.40466,
+        "d2d_merge_copy_submit": 0.063395,
+        "decode_host_call": 2.799658,
+        "frame_header_host": 0.100896,
+        "h2d_copy_submit": 0.051861,
+        "pin_memory_host": 0.303357,
+        "sync_host_wait": 0.015416,
+        "torch_empty_host": 0.05367,
+        "torch_frombuffer_host": 0.022828
+      },
+      "wall_ms": 10.752501
+    }
+  ],
+  "gpu": "NVIDIA H100 80GB HBM3",
+  "nvcomp_version": "6.0.0.12",
+  "profile_mode": "torch.profiler Kineto CPU+CUDA, same CUDA stream; profiled calls separate from wall baseline",
+  "profiled_samples": [
+    {
+      "cuda_events": [
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 114.07600000000093,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.9599999999991269,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 6.9760000000005675,
+          "name": "zstd::get_frame_sizes(unsigned char const* const*, unsigned long*, int)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.7680000000000291,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.9279999999998836,
+          "name": "zstd::init_buffer_vals(int, unsigned int, unsigned char*, int*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 1.8879999999990105,
+          "name": "Memset (Pinned)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 8.0,
+          "name": "void zstd::classify_frames<2>(unsigned char const* const*, zstd::DeviceBlockShare*, unsigned long, unsigned long*, unsigned long, int*, int*, int*, zstd::ZstdFrame*, unsigned long const*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 130.39500000000044,
+          "name": "zstd::init_fse_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 30.846999999999753,
+          "name": "zstd::init_huff_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 604.8090000000011,
+          "name": "zstd::decompression_kernel(unsigned char* const*, unsigned long*, unsigned long const*, unsigned long, zstd::ZstdFrame*, zstd::DeviceBlockShare*, int*, int*, int*, int*, int const*, int const*, int const*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 3.0720000000001164,
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1})"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 2.816000000000713,
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1})"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 234.26300000000265,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 2.9439999999995052,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 7.328000000001339,
+          "name": "zstd::get_frame_sizes(unsigned char const* const*, unsigned long*, int)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.7999999999992724,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.9599999999991269,
+          "name": "zstd::init_buffer_vals(int, unsigned int, unsigned char*, int*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 1.8240000000005239,
+          "name": "Memset (Pinned)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 7.359000000000378,
+          "name": "void zstd::classify_frames<2>(unsigned char const* const*, zstd::DeviceBlockShare*, unsigned long, unsigned long*, unsigned long, int*, int*, int*, zstd::ZstdFrame*, unsigned long const*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 129.91600000000108,
+          "name": "zstd::init_fse_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 30.71799999999712,
+          "name": "zstd::init_huff_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 625.7050000000017,
+          "name": "zstd::decompression_kernel(unsigned char* const*, unsigned long*, unsigned long const*, unsigned long, zstd::ZstdFrame*, zstd::DeviceBlockShare*, int*, int*, int*, int*, int const*, int const*, int const*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 4.383999999998196,
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1})"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 4.064000000002125,
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1})"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 243.03099999999904,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 2.9759999999987485,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 7.774999999997817,
+          "name": "zstd::get_frame_sizes(unsigned char const* const*, unsigned long*, int)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.7669999999998254,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 0.9279999999998836,
+          "name": "zstd::init_buffer_vals(int, unsigned int, unsigned char*, int*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 1.9840000000003783,
+          "name": "Memset (Pinned)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 7.519999999996799,
+          "name": "void zstd::classify_frames<2>(unsigned char const* const*, zstd::DeviceBlockShare*, unsigned long, unsigned long*, unsigned long, int*, int*, int*, zstd::ZstdFrame*, unsigned long const*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 130.65099999999802,
+          "name": "zstd::init_fse_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 31.102999999999156,
+          "name": "zstd::init_huff_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 631.0799999999981,
+          "name": "zstd::decompression_kernel(unsigned char* const*, unsigned long*, unsigned long const*, unsigned long, zstd::ZstdFrame*, zstd::DeviceBlockShare*, int*, int*, int*, int*, int const*, int const*, int const*)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 4.255999999997584,
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1})"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 4.064000000002125,
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#1}::operator()() const::{lambda(unsigned char)#1} const&)::{lambda(int)#1})"
+        }
+      ],
+      "cuda_kernel_active_us_sum": 2421.349999999993,
+      "cuda_memcpy_active_us_sum": 600.5849999999991,
+      "mode": "gpu",
+      "profiled_wall_ms": 12.06786,
+      "profiler_key_averages": "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nzstd::decompression_kernel(unsigned char* const*, un...         0.00%       0.000us         0.00%       0.000us       0.000us       1.862ms        61.60%       1.862ms     620.531us           0 b           0 b           0 b           0 b             3  \n                                            aten::copy_         4.45%     308.057us         5.62%     389.012us      32.418us     614.026us        20.32%     614.026us      51.169us           0 b           0 b           0 b           0 b            12  \n                         Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     600.585us        19.87%     600.585us      66.732us           0 b           0 b           0 b           0 b             9  \nzstd::init_fse_tables(unsigned char*, unsigned long*...         0.00%       0.000us         0.00%       0.000us       0.000us     390.962us        12.94%     390.962us     130.321us           0 b           0 b           0 b           0 b             3  \nzstd::init_huff_tables(unsigned char*, unsigned long...         0.00%       0.000us         0.00%       0.000us       0.000us      92.668us         3.07%      92.668us      30.889us           0 b           0 b           0 b           0 b             3  \nvoid zstd::classify_frames<2>(unsigned char const* c...         0.00%       0.000us         0.00%       0.000us       0.000us      22.879us         0.76%      22.879us       7.626us           0 b           0 b           0 b           0 b             3  \nvoid at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      22.656us         0.75%      22.656us       3.776us           0 b           0 b           0 b           0 b             6  \nzstd::get_frame_sizes(unsigned char const* const*, u...         0.00%       0.000us         0.00%       0.000us       0.000us      22.079us         0.73%      22.079us       7.360us           0 b           0 b           0 b           0 b             3  \n                                        Memset (Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us       5.696us         0.19%       5.696us       1.899us           0 b           0 b           0 b           0 b             3  \nzstd::init_buffer_vals(int, unsigned int, unsigned c...         0.00%       0.000us         0.00%       0.000us       0.000us       2.816us         0.09%       2.816us       0.939us           0 b           0 b           0 b           0 b             3  \n                                           Unrecognized         2.20%     152.267us         2.20%     152.267us     152.267us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             1  \n                                 cudaDeviceGetAttribute         0.14%       9.582us         0.14%       9.582us       0.532us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            18  \n                                          cudaHostAlloc        25.31%       1.751ms        25.31%       1.751ms     116.700us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            15  \n                                       aten::pin_memory         0.24%      16.770us         5.43%     375.692us     125.231us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                                        aten::is_pinned         0.36%      24.904us         0.57%      39.124us      13.041us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                               cudaPointerGetAttributes         0.36%      25.222us         0.36%      25.222us       1.051us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            24  \n                                      aten::_pin_memory         0.76%      52.611us         4.62%     319.798us     106.599us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                                         cudaEventQuery         0.24%      16.793us         0.24%      16.793us       5.598us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                                             aten::set_         0.11%       7.566us         0.11%       7.566us       2.522us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                                            aten::empty         0.56%      38.551us         0.56%      38.551us       6.425us       0.000us         0.00%       0.000us       0.000us           0 b           0 b      12.72 Mb      12.72 Mb             6  \n                                        cudaEventRecord         1.55%     107.442us         1.55%     107.442us       2.985us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            36  \n                                        cudaMemcpyAsync         1.20%      83.310us         1.20%      83.310us       9.257us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             9  \n                                cudaMallocFromPoolAsync         2.15%     148.934us         2.15%     148.934us      24.822us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             6  \n                                  cudaStreamSynchronize        39.95%       2.763ms        39.95%       2.763ms     153.502us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            18  \ncudaOccupancyMaxActiveBlocksPerMultiprocessorWithFla...         0.14%       9.978us         0.14%       9.978us       1.663us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             6  \n                                       cudaLaunchKernel         2.59%     179.043us         2.59%     179.043us       7.460us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            24  \n                                           cudaFreeHost        13.14%     908.548us        13.14%     908.548us      60.570us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            15  \n                                     cudaLaunchHostFunc         0.53%      36.887us         0.53%      36.887us       6.148us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             6  \n                                        cudaMemsetAsync         0.30%      21.079us         0.30%      21.079us       7.026us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                                   cudaFuncSetAttribute         0.07%       4.561us         0.07%       4.561us       1.520us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             3  \n                                          aten::reshape         0.10%       7.032us         0.39%      26.708us       4.451us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             6  \n                                             aten::view         0.54%      37.673us         0.54%      37.673us       3.139us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            12  \n                                           aten::narrow         0.33%      22.672us         0.92%      63.697us       7.077us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             9  \n                                            aten::slice         0.62%      42.815us         0.74%      51.233us       3.416us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            15  \n                                       aten::as_strided         0.16%      10.921us         0.16%      10.921us       0.520us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b            21  \n                                           aten::select         0.22%      15.497us         0.26%      18.000us       3.000us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             6  \n                                          cudaFreeAsync         0.18%      12.287us         0.18%      12.287us       2.048us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             6  \n                                               [memory]         0.00%       0.000us         0.00%       0.000us       0.000us       0.000us         0.00%       0.000us       0.000us           0 b           0 b     -12.72 Mb     -12.72 Mb             6  \n                                  cudaDeviceSynchronize         1.48%     102.164us         1.48%     102.164us     102.164us       0.000us         0.00%       0.000us       0.000us           0 b           0 b           0 b           0 b             1  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 6.917ms\nSelf CUDA time total: 3.022ms\n",
+      "stage_cuda_event_span_ms": [
+        {
+          "elapsed_ms": 0.1408960074186325,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.2301120012998581,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9349439740180969,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.03126399964094162,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.017376000061631203,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.25705599784851074,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.06604799628257751,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9444800019264221,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.025567999109625816,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.015647999942302704,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.26659199595451355,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.0681919977068901,
+          "stage": "config_host_call"
+        },
+        {
+          "elapsed_ms": 0.9542400240898132,
+          "stage": "decode_host_call"
+        },
+        {
+          "elapsed_ms": 0.027327999472618103,
+          "stage": "d2d_merge_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.016416000202298164,
+          "stage": "d2d_merge_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "alignment_query_host": 1.729142,
+        "array_descriptor_host": 0.21396,
+        "config_host_call": 0.623474,
+        "d2d_merge_copy_submit": 0.098493,
+        "decode_host_call": 2.814035,
+        "frame_header_host": 0.106622,
+        "h2d_copy_submit": 0.078673,
+        "pin_memory_host": 0.449005,
+        "sync_host_wait": 0.141239,
+        "torch_empty_host": 0.074799,
+        "torch_frombuffer_host": 0.025437
+      },
+      "trace_file": "gpu-trace.json"
+    },
+    {
+      "cuda_events": [
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 235.60799999999972,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 458.1909999999989,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        },
+        {
+          "cpu_launch_us": 0,
+          "cuda_us": 433.8719999999994,
+          "name": "Memcpy HtoD (Pinned -> Device)"
+        }
+      ],
+      "cuda_kernel_active_us_sum": 0,
+      "cuda_memcpy_active_us_sum": 1127.670999999998,
+      "mode": "cpu",
+      "profiled_wall_ms": 17.912659,
+      "profiler_key_averages": "----------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                              Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem    # of Calls  \n----------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                       aten::copy_        15.84%     280.686us        17.92%     317.679us      52.947us       1.128ms       100.00%       1.128ms     187.945us           0 b           0 b             6  \n    Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       1.128ms       100.00%       1.128ms     375.890us           0 b           0 b             3  \n                  aten::pin_memory         0.79%      13.936us        31.68%     561.523us     187.174us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                   aten::is_pinned         1.36%      24.151us        12.86%     227.975us      75.992us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                      Unrecognized        10.71%     189.757us        10.71%     189.757us     189.757us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             1  \n          cudaPointerGetAttributes         0.79%      14.067us         0.79%      14.067us       4.689us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                 aten::_pin_memory         2.01%      35.566us        18.03%     319.612us     106.537us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                    cudaEventQuery         0.84%      14.944us         0.84%      14.944us       4.981us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                        aten::set_         0.35%       6.181us         0.35%       6.181us       2.060us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                        aten::view         1.23%      21.756us         1.23%      21.756us       3.626us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             6  \n                     aten::reshape         0.16%       2.858us         0.69%      12.314us       4.105us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n                   cudaEventRecord         1.63%      28.894us         1.63%      28.894us       3.210us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             9  \n                   cudaMemcpyAsync         2.09%      36.993us         2.09%      36.993us      12.331us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n             cudaStreamSynchronize        61.92%       1.098ms        61.92%       1.098ms     365.836us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             3  \n             cudaDeviceSynchronize         0.29%       5.140us         0.29%       5.140us       5.140us       0.000us         0.00%       0.000us       0.000us           0 b           0 b             1  \n----------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 1.772ms\nSelf CUDA time total: 1.128ms\n",
+      "stage_cuda_event_span_ms": [
+        {
+          "elapsed_ms": 0.2635520100593567,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.4799039959907532,
+          "stage": "h2d_copy_submit"
+        },
+        {
+          "elapsed_ms": 0.45267200469970703,
+          "stage": "h2d_copy_submit"
+        }
+      ],
+      "stage_host_wall_ms": {
+        "cpu_byte_merge": 6.200633,
+        "cpu_zstd_decode": 6.46756,
+        "h2d_copy_submit": 0.067339,
+        "pin_memory_host": 0.598736,
+        "sync_host_wait": 1.129781,
+        "torch_frombuffer_host": 0.021554
+      },
+      "trace_file": "cpu-trace.json"
+    }
+  ],
+  "records": [
+    {
+      "compressed_bytes": 1098338,
+      "frame_count": 96,
+      "name": "ctx128",
+      "raw_bytes": 1572864,
+      "raw_sha256": "90c3e9fd46f1ececa5fdd610c3f0be161e0aa8f4b0654365d47d95f69ccdb4bb"
+    },
+    {
+      "compressed_bytes": 2192398,
+      "frame_count": 192,
+      "name": "ctx512_first256",
+      "raw_bytes": 3145728,
+      "raw_sha256": "9cef7d47a2ae187ad03e5c391dc5a39f81265f80bfa0d8c32f1e00590ad1aa91"
+    },
+    {
+      "compressed_bytes": 2180528,
+      "frame_count": 192,
+      "name": "ctx512_last256",
+      "raw_bytes": 3145728,
+      "raw_sha256": "53af5e08b4e282de7cb7e61fbd2d5698703e1ac28fb394f4e9e8e10d0c96c42f"
+    }
+  ],
+  "samples": [],
+  "snapshots": {
+    "after": [
+      "698858, GPU-4588bfe9-19fc-1145-227b-0797f69cd21a, 646"
+    ],
+    "before": [
+      "698858, GPU-4588bfe9-19fc-1145-227b-0797f69cd21a, 538"
+    ]
+  },
+  "source_sha256": "63f4c7e3bf3265eb17ba0c51c2aecd5af9841c4ba7ad93b1daba1827755f06d0",
+  "torch": "2.7.0+cu126",
+  "uninstrumented_first_group_ms": {
+    "cpu": 50.13195,
+    "gpu": 37.000394
+  },
+  "uninstrumented_wall_ms": {
+    "cpu": [
+      12.550007,
+      12.784702,
+      12.756683,
+      12.698297,
+      12.825581,
+      13.618729,
+      12.68492,
+      14.744757,
+      17.220695,
+      12.937038,
+      12.728161,
+      13.648115
+    ],
+    "gpu": [
+      9.409519,
+      8.36891,
+      8.901784,
+      8.415751,
+      8.959622,
+      8.415501,
+      26.68842,
+      8.694627,
+      30.892827,
+      9.871058,
+      8.889965,
+      8.459157
+    ]
+  },
+  "uuid": "GPU-4588bfe9-19fc-1145-227b-0797f69cd21a"
+}

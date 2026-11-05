@@ -1,0 +1,73 @@
+{
+  "corpus_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "cpu_first_group_ms": 37.238831,
+  "cpu_samples_ms": [
+    13.696595,
+    16.551608,
+    13.519768,
+    16.690214,
+    16.396518,
+    18.287143,
+    16.48703,
+    16.558125,
+    13.402284,
+    16.313339,
+    16.245421,
+    16.360481
+  ],
+  "cpu_workers": 1,
+  "gpu": "NVIDIA H100 80GB HBM3",
+  "gpu_first_group_ms": 37.535556,
+  "gpu_samples_ms": [
+    9.315853,
+    8.502095,
+    9.357054,
+    8.437926,
+    9.476995,
+    8.4601,
+    9.422253,
+    8.601835,
+    9.472082,
+    8.564036,
+    9.217871,
+    8.440524
+  ],
+  "gpu_uuid": "GPU-4588bfe9-19fc-1145-227b-0797f69cd21a",
+  "nvcomp": "/home/audreymao/kvbytepack_gpu_validation_20261103/venv/lib/python3.11/site-packages/nvidia/nvcomp/__init__.py",
+  "records": [
+    {
+      "compressed_bytes": 1098338,
+      "frames_per_plane": [
+        48,
+        48
+      ],
+      "name": "ctx128",
+      "raw_bytes": 1572864,
+      "raw_sha256": "90c3e9fd46f1ececa5fdd610c3f0be161e0aa8f4b0654365d47d95f69ccdb4bb"
+    },
+    {
+      "compressed_bytes": 2192398,
+      "frames_per_plane": [
+        96,
+        96
+      ],
+      "name": "ctx512_first256",
+      "raw_bytes": 3145728,
+      "raw_sha256": "9cef7d47a2ae187ad03e5c391dc5a39f81265f80bfa0d8c32f1e00590ad1aa91"
+    },
+    {
+      "compressed_bytes": 2180528,
+      "frames_per_plane": [
+        96,
+        96
+      ],
+      "name": "ctx512_last256",
+      "raw_bytes": 3145728,
+      "raw_sha256": "53af5e08b4e282de7cb7e61fbd2d5698703e1ac28fb394f4e9e8e10d0c96c42f"
+    }
+  ],
+  "repetitions": 12,
+  "source_sha256": "63f4c7e3bf3265eb17ba0c51c2aecd5af9841c4ba7ad93b1daba1827755f06d0",
+  "torch": "2.7.0+cu126",
+  "warmup": 2
+}

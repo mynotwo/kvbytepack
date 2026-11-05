@@ -1,0 +1,33 @@
+{
+  "cuda_runtime": "12.6",
+  "dependency_snapshot": {
+    "commit": "e9916d1af42319381a8d00b2edd0eee1575b1128",
+    "depends_on": [
+      "#5479",
+      "#5480"
+    ],
+    "merged_to_default_branch": false,
+    "repository": "LMCache"
+  },
+  "hardware": "NVIDIA H100 80GB HBM3",
+  "input": {
+    "bytes": 6235650,
+    "path": "results/aibrix_layout/model_capture/kv_payloads.npz",
+    "public_blob_bytes_sha256_verified": true,
+    "public_repository_commit": "d4039cdcaed434ba2f63dd4bc2eed2c6265b79fa",
+    "sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211"
+  },
+  "measurement": "component helper only; pinned host-memory transfers; no GDS or storage I/O; no serving request",
+  "measurement_date_client": "2026-11-04 America/Los_Angeles",
+  "nvcomp": "6.0.0.12",
+  "omitted_from_public_snapshot": [
+    "corpus NPZ copy",
+    "raw run logs",
+    "GPU process monitor snapshots",
+    "host paths, process IDs, GPU UUIDs"
+  ],
+  "python": "3.11.2",
+  "schema_version": 1,
+  "torch": "2.7.0+cu126",
+  "zstandard": "0.25.0"
+}

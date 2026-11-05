@@ -1,0 +1,157 @@
+{
+  "corpus_sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+  "current_exact_cpu_over_gpu_ratio": 1.6677691461995066,
+  "current_exact_original_script_medians_ms": {
+    "cpu": 15.557310000000001,
+    "gpu": 9.328215499999999
+  },
+  "first_call_ms": {
+    "cpu": 50.13195,
+    "gpu": 37.000394
+  },
+  "helper_source_sha256": "63f4c7e3bf3265eb17ba0c51c2aecd5af9841c4ba7ad93b1daba1827755f06d0",
+  "kineto_device_activity": {
+    "cpu": {
+      "memcpy": {
+        "d2h_or_d2d_count": 0,
+        "h2d_active_us": 1127.671,
+        "h2d_bytes": 7864320,
+        "h2d_count": 3,
+        "payload_active_us": 1127.671,
+        "payload_bytes": 7864320,
+        "small_descriptor_active_us": 0,
+        "small_descriptor_bytes": 0
+      }
+    },
+    "gpu": {
+      "kernels": {
+        "all_kernel_active_us": 2415.654,
+        "byte_merge_kernel_active_us": 22.656,
+        "byte_merge_kernel_count": 6,
+        "main_zstd_decompression_kernel_active_us": 1861.594,
+        "zstd_by_name": {
+          "void zstd::classify_frames<2>(unsigned char const* const*, zstd::DeviceBlockShare*, unsigned long, unsigned long*, unsigned long, int*, int*, int*, zstd::ZstdFrame*, unsigned long const*)": {
+            "active_us": 22.878999999999998,
+            "count": 3
+          },
+          "zstd::decompression_kernel(unsigned char* const*, unsigned long*, unsigned long const*, unsigned long, zstd::ZstdFrame*, zstd::DeviceBlockShare*, int*, int*, int*, int*, int const*, int const*, int const*)": {
+            "active_us": 1861.594,
+            "count": 3
+          },
+          "zstd::get_frame_sizes(unsigned char const* const*, unsigned long*, int)": {
+            "active_us": 22.079,
+            "count": 3
+          },
+          "zstd::init_buffer_vals(int, unsigned int, unsigned char*, int*)": {
+            "active_us": 2.816,
+            "count": 3
+          },
+          "zstd::init_fse_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)": {
+            "active_us": 390.96200000000005,
+            "count": 3
+          },
+          "zstd::init_huff_tables(unsigned char*, unsigned long*, unsigned long, int*, int const*, zstd::DeviceBlockShare*)": {
+            "active_us": 92.668,
+            "count": 3
+          }
+        },
+        "zstd_kernel_active_us": 2392.998,
+        "zstd_setup_kernel_active_us": 531.404
+      },
+      "memcpy": {
+        "d2h_or_d2d_count": 0,
+        "h2d_active_us": 600.585,
+        "h2d_bytes": 5478944,
+        "h2d_count": 9,
+        "payload_active_us": 591.37,
+        "payload_bytes": 5471264,
+        "small_descriptor_active_us": 9.215,
+        "small_descriptor_bytes": 7680
+      },
+      "memset": {
+        "active_us": 5.696,
+        "bytes": 1920,
+        "count": 3
+      }
+    }
+  },
+  "kineto_wall_instrumentation": {
+    "cpu": {
+      "profile_helper_uninstrumented_median_ms": 12.8051415,
+      "profiled_wall_ms": 17.912659,
+      "wall_instrumentation_overhead_pct": 39.88645888840825
+    },
+    "gpu": {
+      "profile_helper_uninstrumented_median_ms": 8.8958745,
+      "profiled_wall_ms": 12.06786,
+      "wall_instrumentation_overhead_pct": 35.65681485277248
+    }
+  },
+  "old_exact_benchmark_medians_ms": {
+    "cpu": 16.3784995,
+    "gpu": 8.909853
+  },
+  "old_exact_cpu_over_gpu_ratio": 1.8382457600591167,
+  "original_benchmark_sha256": "d3ab6965397caf53e5a337c08e2e2d59bbf4a53c8fb22b27ac5da1e3e9c7e32e",
+  "profile_helper_cpu_over_gpu_ratio": 1.4394471841975738,
+  "profile_helper_uninstrumented_medians_ms": {
+    "cpu": 12.8051415,
+    "gpu": 8.8958745
+  },
+  "profile_script_sha256": "909812ef8e5a06dbe9d21ede2445c30fd7638ac111c219814ba3e3e8ee83ed05",
+  "profile_stage_observations": {
+    "cpu": {
+      "event_only_wall_ms_median": 14.732844499999999,
+      "event_only_wall_ms_samples": [
+        14.91016,
+        14.777059,
+        14.68863,
+        14.536775
+      ],
+      "host_call_ms_medians": {
+        "cpu_byte_merge": 4.2544845,
+        "cpu_zstd_decode": 6.4652025,
+        "h2d_copy_submit": 0.038297,
+        "pin_memory_host": 0.2799965,
+        "sync_host_wait": 0.515973,
+        "torch_frombuffer_host": 0.016126
+      },
+      "stream_span_ms_medians_by_group": {
+        "h2d_copy_submit": 0.565423995256424
+      }
+    },
+    "gpu": {
+      "event_only_wall_ms_median": 10.714688500000001,
+      "event_only_wall_ms_samples": [
+        10.997801,
+        10.593512,
+        10.676876,
+        10.752501
+      ],
+      "host_call_ms_medians": {
+        "alignment_query_host": 1.7138815,
+        "array_descriptor_host": 0.206595,
+        "config_host_call": 0.42505,
+        "d2d_merge_copy_submit": 0.064039,
+        "decode_host_call": 2.7505414999999998,
+        "frame_header_host": 0.102645,
+        "h2d_copy_submit": 0.05297,
+        "pin_memory_host": 0.3228205,
+        "sync_host_wait": 0.0154865,
+        "torch_empty_host": 0.0500185,
+        "torch_frombuffer_host": 0.023495500000000002
+      },
+      "stream_span_ms_medians_by_group": {
+        "config_host_call": 0.3306399993598461,
+        "d2d_merge_copy_submit": 0.09607999864965677,
+        "decode_host_call": 2.7657119631767273,
+        "h2d_copy_submit": 0.40352001413702965
+      }
+    }
+  },
+  "sampling": {
+    "profile_event_groups_per_mode": 4,
+    "timed_repetitions": 12,
+    "warmups": 2
+  }
+}
