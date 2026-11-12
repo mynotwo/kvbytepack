@@ -1,41 +1,68 @@
-import os
-import sys
+import hashlib
+import json
+from pathlib import Path
 
 import numpy as np
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from kvbytepack import unzip_tensor, zip_tensor  # noqa: E402
+import kvbytepack
+from kvbytepack import layout
+
+LEGACY = Path(__file__).parent / "fixtures" / "legacy_kvz1"
 
 
-def _kv_like(shape, seed=0):
-    rng = np.random.default_rng(seed)
-    x = rng.standard_normal(shape).astype(np.float32)
-    return x * rng.uniform(0.1, 8, shape[-1]).astype(np.float32)
+@pytest.mark.parametrize("dtype", ["<f2", "<f4", ">f4", "<f8", "|u1", "<i2", "|V2"])
+@pytest.mark.parametrize("lay", layout.LAYOUTS)
+def test_numpy_round_trip(dtype, lay):
+    raw = np.random.default_rng(0).integers(0, 256, 4 * 6 * 5 * 8, dtype=np.uint8).tobytes()
+    arr = np.frombuffer(raw[: 4 * 6 * 5 * np.dtype(dtype).itemsize], dtype=dtype).reshape(4, 6, 5)
+    out = kvbytepack.unpack(kvbytepack.pack(arr, layout=lay))
+    assert out.dtype == arr.dtype and out.shape == arr.shape and out.tobytes() == arr.tobytes()
+    assert out.flags.writeable
 
 
-@pytest.mark.parametrize("dtype", ["float32", "float16"])
-@pytest.mark.parametrize("method", ["raw_zstd-1", "pipeline_zstd-1"])
-def test_numpy_round_trip(dtype, method):
-    x = _kv_like((2, 4, 33, 16)).astype(dtype)
-    y = unzip_tensor(zip_tensor(x, method))
-    assert y.dtype == x.dtype and y.shape == x.shape
-    assert y.tobytes() == x.tobytes()
+def test_non_contiguous_input_packs_logical_order():
+    arr = np.arange(60, dtype="<f4").reshape(6, 10)[:, ::2]
+    assert np.array_equal(kvbytepack.unpack(kvbytepack.pack(arr)), arr)
 
 
-def test_pipeline_beats_raw_on_kv_like_data():
-    x = _kv_like((64, 128)).astype(np.float16)
-    assert len(zip_tensor(x, "pipeline_zstd-1")) < len(zip_tensor(x, "raw_zstd-1"))
+def test_special_float_bits_survive():
+    bits = np.array([0, 0x8000, 1, 0x7C00, 0xFC00, 0x7E01, 0x7D55, 0xFFFF], dtype="<u2")
+    arr = bits.view("<f2")
+    assert kvbytepack.unpack(kvbytepack.pack(arr)).view("<u2").tolist() == bits.tolist()
 
 
-def test_rejects_foreign_blob():
-    with pytest.raises(ValueError):
-        unzip_tensor(b"nope" + bytes(8))
+def test_raw_buffers_need_geometry():
+    with pytest.raises(TypeError):
+        kvbytepack.pack(b"\0\0")
 
 
-def test_torch_bfloat16_round_trip():
+def test_layout_shrinks_real_bf16_kv():
+    path = Path(__file__).parents[1] / "data" / "qwen2.5-0.5b-bf16-kv.npz"
+    with np.load(path) as z:
+        k = z["ctx512_K_05"]
+    plain = len(kvbytepack.pack(k, layout="none"))
+    laid = len(kvbytepack.pack(k))
+    assert laid < 0.9 * plain
+
+
+def test_reads_every_legacy_kvz1_fixture():
+    index = json.loads((LEGACY / "index.json").read_text())["blobs"]
+    assert len(index) == 32
+    for name, want in index.items():
+        out = kvbytepack.unpack((LEGACY / name).read_bytes())
+        assert str(out.dtype) == want["dtype"] and list(out.shape) == want["shape"], name
+        assert hashlib.sha256(out.tobytes()).hexdigest() == want["sha256"], name
+
+
+@pytest.mark.parametrize("name", ["bfloat16", "float16", "float32", "float8_e4m3fn", "int8"])
+def test_torch_round_trip(name):
     torch = pytest.importorskip("torch")
-    x = torch.from_numpy(_kv_like((3, 40, 32))).to(torch.bfloat16)
-    y = unzip_tensor(zip_tensor(x))
-    assert y.dtype == torch.bfloat16 and y.shape == x.shape
-    assert torch.equal(x.view(torch.int16), y.view(torch.int16))
+    dt = getattr(torch, name)
+    src = torch.randint(0, 256, (3, 4, 8), dtype=torch.uint8)
+    width = torch.empty(0, dtype=dt).element_size()
+    x = src.reshape(-1)[: 96 // width * width].view(dt) if width > 1 else src.reshape(-1).view(dt)
+    x = x.reshape(-1, 4)
+    y = kvbytepack.unpack(kvbytepack.pack(x))
+    assert isinstance(y, torch.Tensor) and y.dtype == x.dtype and y.shape == x.shape
+    assert torch.equal(y.view(torch.uint8), x.view(torch.uint8))

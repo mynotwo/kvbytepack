@@ -1,7 +1,7 @@
 [project]
 name = "kvbytepack"
-version = "0.2.1"
-description = "Lossless compression of LLM KV cache and activations via byte-plane layout + general-purpose codecs"
+version = "0.3.0"
+description = "Bit-exact KV-cache compression and a cost model for when it pays"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.9"
@@ -21,13 +21,13 @@ Homepage = "https://mynotwo.github.io/kvcache-bench/"
 Repository = "https://github.com/mynotwo/kvbytepack"
 
 [project.optional-dependencies]
-codecs = ["lz4", "brotli"]
-bench = ["torch>=2.1", "transformers>=4.40", "lz4", "brotli"]
+codecs = ["lz4"]
+capture = ["torch>=2.1", "transformers>=4.40"]
 test = ["pytest"]
 
 [tool.setuptools]
 license-files = ["LICENSE"]
-packages = ["kvbytepack", "kvzip"]
+packages = ["kvbytepack", "kvbytepack.integrations"]
 
 [build-system]
 requires = ["setuptools>=69"]

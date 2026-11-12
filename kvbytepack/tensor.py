@@ -1,61 +1,65 @@
-"""Compress a whole tensor in one call: zip_tensor / unzip_tensor.
+"""Pack NumPy arrays or PyTorch tensors into KVB2 records and back, bit-exactly.
 
-The last dimension is the channel axis D and every leading dimension is
-flattened into tokens S, so a [layers, heads, tokens, head_dim] KV block
-works as is. The blob records method, dtype and shape, so decoding needs
-nothing but the blob. Accepts numpy arrays and torch tensors (bfloat16
-included); returns the same kind it was given.
+The last axis is treated as the channel axis; all leading axes are flattened
+into rows. For a KV block ``[layers, heads, tokens, head_dim]`` that groups
+``head_dim`` channels; for ``[tokens, heads * head_dim]`` it groups all heads.
+Put the axis whose values share a scale last for the best ratio.
 """
-import json
-import struct
-
 import numpy as np
 
-from .codec import decode, encode
+from . import legacy, record
 
-MAGIC = b"KVZ1"
-# torch dtypes numpy lacks travel as same-width integers.
-_TORCH_VIEW = {"bfloat16": "int16", "float8_e4m3fn": "uint8", "float8_e5m2": "uint8"}
+DEFAULT_LAYOUT = "channel-planes"
+DEFAULT_CODEC = "zstd:1"
 
 
-def _as_numpy(x):
+def _to_bytes(x):
     if isinstance(x, np.ndarray):
-        return np.ascontiguousarray(x), str(x.dtype), "numpy"
-    import torch
-
-    name = str(x.dtype).removeprefix("torch.")
-    t = x.detach().cpu().contiguous()
-    if name in _TORCH_VIEW:
-        t = t.view(getattr(torch, _TORCH_VIEW[name]))
-    return t.numpy(), name, "torch"
-
-
-def zip_tensor(x, method="pipeline_zstd-1"):
-    arr, dtype, kind = _as_numpy(x)
-    shape = list(arr.shape) or [1]
-    D = shape[-1]
-    S = arr.size // D if D else 0
-    head = json.dumps({"m": method, "dtype": dtype, "shape": list(arr.shape),
-                       "kind": kind}).encode()
-    body = encode(arr.tobytes(), S, D, arr.itemsize, method)
-    return MAGIC + struct.pack("<I", len(head)) + head + body
+        arr = x if x.flags.c_contiguous else x.copy(order="C")  # ascontiguousarray would 1-D a 0-d array
+        return arr.tobytes(), arr.shape, arr.dtype.itemsize, "numpy:" + arr.dtype.str
+    mod = type(x).__module__
+    if mod.startswith("torch"):
+        import torch
+        t = x.detach().cpu().contiguous()
+        flat = t.reshape(-1).view(torch.uint8) if t.numel() else torch.empty(0, dtype=torch.uint8)
+        name = str(t.dtype).removeprefix("torch.")
+        return flat.numpy().tobytes(), tuple(t.shape), t.element_size(), "torch:" + name
+    if isinstance(x, (bytes, bytearray, memoryview)):
+        raise TypeError("raw buffers need an explicit geometry: use kvbytepack.record.encode")
+    raise TypeError(f"unsupported tensor type {type(x).__name__}")
 
 
-def unzip_tensor(blob):
-    if blob[:4] != MAGIC:
-        raise ValueError("not a kvzip tensor blob")
-    (n,) = struct.unpack_from("<I", blob, 4)
-    meta = json.loads(blob[8:8 + n])
-    shape, dtype = meta["shape"], meta["dtype"]
-    store = np.dtype(_TORCH_VIEW.get(dtype, dtype))
-    D = shape[-1] if shape else 1
-    count = int(np.prod(shape)) if shape else 1
-    S = count // D if D else 0
-    raw = decode(blob[8 + n:], S, D, store.itemsize, meta["m"])
-    arr = np.frombuffer(raw, dtype=store).reshape(shape).copy()
-    if meta["kind"] == "numpy":
-        return arr
-    import torch
+def _from_bytes(raw, shape, tag):
+    kind, _, dtype = tag.partition(":")
+    if kind == "numpy":
+        return np.frombuffer(raw, dtype=np.dtype(dtype)).reshape(shape).copy()
+    if kind == "torch":
+        import torch
+        dt = getattr(torch, dtype)
+        if not raw:
+            return torch.empty(shape, dtype=dt)
+        return torch.frombuffer(bytearray(raw), dtype=torch.uint8).view(dt).reshape(shape)
+    raise ValueError(f"record holds opaque bytes (tag {tag!r}); use kvbytepack.record.decode")
 
-    t = torch.from_numpy(arr)
-    return t.view(getattr(torch, dtype)) if dtype in _TORCH_VIEW else t
+
+def pack(x, *, layout=DEFAULT_LAYOUT, codec=DEFAULT_CODEC):
+    """Compress an array/tensor into a self-describing KVB2 record (``bytes``)."""
+    raw, shape, width, tag = _to_bytes(x)
+    return record.encode(raw, shape, width, tag=tag, layout=layout, codec=codec)
+
+
+def unpack(blob):
+    """Restore the array/tensor packed by :func:`pack` (also reads legacy KVZ1 blobs).
+
+    PyTorch-origin records come back as CPU tensors.
+    """
+    head = bytes(blob[:4])
+    if head == record.MAGIC:
+        h, raw = record.decode(blob)
+        return _from_bytes(raw, h.shape, h.tag)
+    if head == legacy.MAGIC:
+        meta, raw = legacy.decode(blob)
+        if meta["kind"] == "numpy":
+            return _from_bytes(raw, tuple(meta["shape"]), "numpy:" + np.dtype(meta["dtype"]).str)
+        return _from_bytes(raw, tuple(meta["shape"]), "torch:" + meta["dtype"])
+    raise ValueError("not a kvbytepack record")

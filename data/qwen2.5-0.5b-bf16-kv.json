@@ -1,0 +1,20 @@
+{
+ "model": "Qwen/Qwen2.5-0.5B",
+ "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+ "contexts": [
+  128,
+  512
+ ],
+ "layers": 24,
+ "dtype": "bfloat16",
+ "device": "cpu",
+ "torch": "2.14.1",
+ "transformers": "5.20.2",
+ "attention": "eager",
+ "prompt_url": "https://github.com/python/cpython/blob/3bb231a6a5dc02b95658877318bf61501a7209e9/Lib/argparse.py",
+ "prompt_sha256": "7cc582dcb3b76e2c957f78a3f74e9809d6c311d6aab7bcaa2c9954d0cbff5f30",
+ "input_protocol": "non-repeated prefixes of one public CPython source file",
+ "arrays": "ctx{128,512}_{K,V}_{layer:02d}: uint16 BF16 bit patterns, shape [tokens, kv_heads*head_dim] = [ctx, 128]",
+ "sha256": "8596ac9a5b7475ee61b26c72847966ec846cb02ccee934868725db298143c211",
+ "license_note": "Activations derived from a CPython source file (PSF license, see PYTHON-LICENSE)."
+}

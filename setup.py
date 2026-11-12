@@ -1,4 +1,4 @@
-"""Optional CPU byte-layout kernel; NumPy remains the portable fallback."""
+"""Optional C kernel for the 2-byte channel-plane merge; NumPy is the portable fallback."""
 from setuptools import Extension, setup
 
-setup(ext_modules=[Extension("kvbytepack._decode", ["kvbytepack/_decode.c"], optional=True)])
+setup(ext_modules=[Extension("kvbytepack._native", ["kvbytepack/_native.c"], optional=True)])
