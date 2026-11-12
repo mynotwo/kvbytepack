@@ -104,8 +104,8 @@ They give a necessary condition, not a promised speedup.
 
 Magic, layout id, codec id and level, element width, shape, dtype tag, a plane
 table (mode and length per plane), the plane payloads, then a CRC32 over
-everything. Any single-byte corruption, truncation or trailing data is rejected
-before data is returned. CRC32 detects accidents; it does not authenticate.
+everything. Corruption, truncation and trailing data are rejected before data
+is returned. CRC32 detects accidents; it does not authenticate.
 Field-by-field layout is in `kvbytepack/record.py`.
 
 ## History
