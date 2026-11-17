@@ -257,4 +257,7 @@ python -m pytest -q tests
 
 CI checks Python 3.9 and 3.12, installed-wheel imports, the CPU entry and
 reproducible CSV exports. The 3.12 job also checks CPU PyTorch BF16 round trips.
+Each CI step is a gate in [`scripts/ci.sh`](scripts/ci.sh): `scripts/ci.sh install test`
+runs the two commands above, and `scripts/ci.sh` alone repeats the whole CI job
+for the active Python in a throwaway virtual environment (needs network access).
 Licensed under [Apache-2.0](LICENSE).
