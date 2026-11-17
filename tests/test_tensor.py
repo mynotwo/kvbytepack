@@ -1,11 +1,7 @@
-import os
-import sys
-
 import numpy as np
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from kvbytepack import unzip_tensor, zip_tensor  # noqa: E402
+from kvbytepack import unzip_tensor, zip_tensor
 
 
 def _kv_like(shape, seed=0):

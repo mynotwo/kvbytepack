@@ -29,6 +29,10 @@ test = ["pytest"]
 license-files = ["LICENSE"]
 packages = ["kvbytepack", "kvzip"]
 
+[tool.pytest.ini_options]
+# Tests import bench/ and examples/ from the checkout root.
+pythonpath = ["."]
+
 [build-system]
 requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"

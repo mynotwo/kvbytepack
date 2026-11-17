@@ -1,12 +1,8 @@
-import os
-import sys
-
 import numpy as np
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from kvbytepack.codec import (available_methods, byte_merge, byte_split, decode, encode,  # noqa: E402
-                         payload_size, transpose_bytes, untranspose_bytes)
+from kvbytepack.codec import (available_methods, byte_merge, byte_split, decode, encode,
+                              payload_size, transpose_bytes, untranspose_bytes)
 
 
 def _bf16_like(S, D, seed=0):
