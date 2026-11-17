@@ -2,7 +2,8 @@ name: test
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # ubuntu-latest moved to Ubuntu 26, which has no Python 3.9 for setup-python.
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: ["3.9", "3.12"]
